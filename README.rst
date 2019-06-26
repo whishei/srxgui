@@ -21,4 +21,4 @@ Features
 
 #SRX Profile
 To load into ipython use the command:
-ipython --profile=srxgui
+ipython --profile-dir=.ipython/profile_srxgui
