@@ -18,3 +18,7 @@ Features
 --------
 
 * TODO
+
+#SRX Profile
+To load into ipython use the command:
+ipython --profile=srxgui
