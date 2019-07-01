@@ -18,28 +18,28 @@ from PyQt5.QtGui import QIcon, QPixmap
 Ui_MainWindow, QtBaseClass = uic.loadUiType('xanes.ui')
 
 
-class MyApp(QMainWindow):
+class spectroscopy(QtBaseClass, Ui_MainWindow):
 
     global element
     element = 0
 
     def __init__(self):
-        super(MyApp, self).__init__()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-        self.ui.start_scan.clicked.connect(self.CalculateTime)
-        self.ui.start_scan.clicked.connect(self.plan1)
-        self.ui.index.clicked.connect(self.page2)
-        self.ui.index2.clicked.connect(self.page1)
-        self.ui.index3.clicked.connect(self.page1)
-        self.ui.choice.activated[str].connect(self.onActivated)
-        self.ui.edge.activated[str].connect(self.onChanged)
-        self.ui.normalized2.clicked.connect(self.normalizedgraph)
-        self.ui.normalized3.clicked.connect(self.normalizedgraph)
-        self.ui.raw1.clicked.connect(self.rawgraph)
-        self.ui.raw3.clicked.connect(self.rawgraph)
-        self.ui.count1.clicked.connect(self.countgraph)
-        self.ui.count2.clicked.connect(self.countgraph)
+        super(QtBaseClass, self).__init__()
+        #self = Ui_MainWindow()
+        self.setupUi(self)
+        self.start_scan.clicked.connect(self.CalculateTime)
+        self.start_scan.clicked.connect(self.plan1)
+        self.index.clicked.connect(self.page2)
+        self.index2.clicked.connect(self.page1)
+        self.index3.clicked.connect(self.page1)
+        self.choice.activated[str].connect(self.onActivated)
+        self.edge.activated[str].connect(self.onChanged)
+        self.normalized2.clicked.connect(self.normalizedgraph)
+        self.normalized3.clicked.connect(self.normalizedgraph)
+        self.raw1.clicked.connect(self.rawgraph)
+        self.raw3.clicked.connect(self.rawgraph)
+        self.count1.clicked.connect(self.countgraph)
+        self.count2.clicked.connect(self.countgraph)
 
 
     ##################### Regions ########################
@@ -49,91 +49,91 @@ class MyApp(QMainWindow):
         :signal: set number of regions
         :return: disables/enables regions
         '''
-        regions = int(self.ui.num_regions.text())
+        regions = int(self.num_regions.text())
         if regions == 1 or regions == 2 or regions == 3 or regions == 4:
-            self.ui.xafs3_start.setDisabled(True)
-            self.ui.xafs3_stop.setDisabled(True)
-            self.ui.xafs3_step.setDisabled(True)
-            self.ui.xafs3_npts.setDisabled(True)
-            self.ui.xafs3_dwell.setDisabled(True)
-            self.ui.xafs3_start.setRange(0,0)
-            self.ui.xafs3_stop.setRange(0,0)
+            self.xafs3_start.setDisabled(True)
+            self.xafs3_stop.setDisabled(True)
+            self.xafs3_step.setDisabled(True)
+            self.xafs3_npts.setDisabled(True)
+            self.xafs3_dwell.setDisabled(True)
+            self.xafs3_start.setRange(0,0)
+            self.xafs3_stop.setRange(0,0)
             if regions == 2 or regions == 3 or regions == 4:
-                self.ui.xanes_start.setEnabled(True)
-                self.ui.xanes_stop.setEnabled(True)
-                self.ui.xanes_step.setEnabled(True)
-                self.ui.xanes_npts.setEnabled(True)
-                self.ui.xanes_dwell.setEnabled(True)
-                self.ui.xanes_start.setRange(-50,50)
-                self.ui.xanes_stop.setRange(-50,50)
+                self.xanes_start.setEnabled(True)
+                self.xanes_stop.setEnabled(True)
+                self.xanes_step.setEnabled(True)
+                self.xanes_npts.setEnabled(True)
+                self.xanes_dwell.setEnabled(True)
+                self.xanes_start.setRange(-50,50)
+                self.xanes_stop.setRange(-50,50)
                 if regions == 3 or regions == 4:
-                    self.ui.xafs1_start.setEnabled(True)
-                    self.ui.xafs1_stop.setEnabled(True)
-                    self.ui.xafs1_step.setEnabled(True)
-                    self.ui.xafs1_npts.setEnabled(True)
-                    self.ui.xafs1_dwell.setEnabled(True)
-                    self.ui.xafs1_start.setRange(-50,50)
-                    self.ui.xafs1_stop.setRange(-50,50)
+                    self.xafs1_start.setEnabled(True)
+                    self.xafs1_stop.setEnabled(True)
+                    self.xafs1_step.setEnabled(True)
+                    self.xafs1_npts.setEnabled(True)
+                    self.xafs1_dwell.setEnabled(True)
+                    self.xafs1_start.setRange(-50,50)
+                    self.xafs1_stop.setRange(-50,50)
                     if regions == 4:
-                        self.ui.xafs2_start.setEnabled(True)
-                        self.ui.xafs2_stop.setEnabled(True)
-                        self.ui.xafs2_step.setEnabled(True)
-                        self.ui.xafs2_npts.setEnabled(True)
-                        self.ui.xafs2_dwell.setEnabled(True)
-                        self.ui.xafs2_start.setRange(-50,50)
-                        self.ui.xafs2_stop.setRange(-50,50)
+                        self.xafs2_start.setEnabled(True)
+                        self.xafs2_stop.setEnabled(True)
+                        self.xafs2_step.setEnabled(True)
+                        self.xafs2_npts.setEnabled(True)
+                        self.xafs2_dwell.setEnabled(True)
+                        self.xafs2_start.setRange(-50,50)
+                        self.xafs2_stop.setRange(-50,50)
         if regions == 1 or regions == 2 or regions == 3:
-            self.ui.xafs2_start.setDisabled(True)
-            self.ui.xafs2_stop.setDisabled(True)
-            self.ui.xafs2_step.setDisabled(True)
-            self.ui.xafs2_npts.setDisabled(True)
-            self.ui.xafs2_dwell.setDisabled(True)
-            self.ui.xafs2_start.setRange(0,0)
-            self.ui.xafs2_stop.setRange(0,0)
+            self.xafs2_start.setDisabled(True)
+            self.xafs2_stop.setDisabled(True)
+            self.xafs2_step.setDisabled(True)
+            self.xafs2_npts.setDisabled(True)
+            self.xafs2_dwell.setDisabled(True)
+            self.xafs2_start.setRange(0,0)
+            self.xafs2_stop.setRange(0,0)
         if regions == 1 or regions == 2:
-            self.ui.xafs1_start.setDisabled(True)
-            self.ui.xafs1_stop.setDisabled(True)
-            self.ui.xafs1_step.setDisabled(True)
-            self.ui.xafs1_npts.setDisabled(True)
-            self.ui.xafs1_dwell.setDisabled(True)
-            self.ui.xafs1_start.setRange(0,0)
-            self.ui.xafs1_stop.setRange(0,0)
+            self.xafs1_start.setDisabled(True)
+            self.xafs1_stop.setDisabled(True)
+            self.xafs1_step.setDisabled(True)
+            self.xafs1_npts.setDisabled(True)
+            self.xafs1_dwell.setDisabled(True)
+            self.xafs1_start.setRange(0,0)
+            self.xafs1_stop.setRange(0,0)
         if regions == 1:
-            self.ui.xanes_start.setDisabled(True)
-            self.ui.xanes_stop.setDisabled(True)
-            self.ui.xanes_step.setDisabled(True)
-            self.ui.xanes_npts.setDisabled(True)
-            self.ui.xanes_dwell.setDisabled(True)
-            self.ui.xanes_start.setRange(0,0)
-            self.ui.xanes_stop.setRange(0,0)
+            self.xanes_start.setDisabled(True)
+            self.xanes_stop.setDisabled(True)
+            self.xanes_step.setDisabled(True)
+            self.xanes_npts.setDisabled(True)
+            self.xanes_dwell.setDisabled(True)
+            self.xanes_start.setRange(0,0)
+            self.xanes_stop.setRange(0,0)
         if regions == 5:
-            self.ui.xafs3_start.setEnabled(True)
-            self.ui.xafs3_stop.setEnabled(True)
-            self.ui.xafs3_step.setEnabled(True)
-            self.ui.xafs3_npts.setEnabled(True)
-            self.ui.xafs3_dwell.setEnabled(True)
-            self.ui.xafs3_start.setRange(-50,50)
-            self.ui.xafs3_stop.setRange(-50,50)
+            self.xafs3_start.setEnabled(True)
+            self.xafs3_stop.setEnabled(True)
+            self.xafs3_step.setEnabled(True)
+            self.xafs3_npts.setEnabled(True)
+            self.xafs3_dwell.setEnabled(True)
+            self.xafs3_start.setRange(-50,50)
+            self.xafs3_stop.setRange(-50,50)
 
 
     ##################### Graph Widgets ##########################
 
     def rawgraph(self):
-        self.ui.stackedWidget_2.setCurrentIndex(1)
+        self.stackedWidget_2.setCurrentIndex(1)
 
     def normalizedgraph(self):
-        self.ui.stackedWidget_2.setCurrentIndex(0)
+        self.stackedWidget_2.setCurrentIndex(0)
 
     def countgraph(self):
-        self.ui.stackedWidget_2.setCurrentIndex(2)
+        self.stackedWidget_2.setCurrentIndex(2)
 
 
     ################## Accessing Element Index ###################
     def page2(self):
-        self.ui.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(1)
 
     def page1(self):
-        self.ui.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(0)
 
 
     ########################### Absolute #######################
@@ -147,30 +147,30 @@ class MyApp(QMainWindow):
                  for Relative
                     sets all regions' start/stop values to 0
         '''
-        mode = self.ui.mode.currentText()
-        edge_energy = float(self.ui.edge_energy.text())
+        mode = self.mode.currentText()
+        edge_energy = float(self.edge_energy.text())
         if mode == 'Absolute':
-            self.ui.pe_start.setValue(edge_energy)
-            self.ui.xanes_start.setValue(edge_energy)
-            self.ui.xafs1_start.setValue(edge_energy)
-            self.ui.xafs2_start.setValue(edge_energy)
-            self.ui.xafs3_start.setValue(edge_energy)
-            self.ui.pe_stop.setValue(edge_energy)
-            self.ui.xanes_stop.setValue(edge_energy)
-            self.ui.xafs1_stop.setValue(edge_energy)
-            self.ui.xafs2_stop.setValue(edge_energy)
-            self.ui.xafs3_stop.setValue(edge_energy)
+            self.pe_start.setValue(edge_energy)
+            self.xanes_start.setValue(edge_energy)
+            self.xafs1_start.setValue(edge_energy)
+            self.xafs2_start.setValue(edge_energy)
+            self.xafs3_start.setValue(edge_energy)
+            self.pe_stop.setValue(edge_energy)
+            self.xanes_stop.setValue(edge_energy)
+            self.xafs1_stop.setValue(edge_energy)
+            self.xafs2_stop.setValue(edge_energy)
+            self.xafs3_stop.setValue(edge_energy)
         if mode == 'Relative':
-            self.ui.pe_start.setValue(0)
-            self.ui.xanes_start.setValue(0)
-            self.ui.xafs1_start.setValue(0)
-            self.ui.xafs2_start.setValue(0)
-            self.ui.xafs3_start.setValue(0)
-            self.ui.pe_stop.setValue(0)
-            self.ui.xanes_stop.setValue(0)
-            self.ui.xafs1_stop.setValue(0)
-            self.ui.xafs2_stop.setValue(0)
-            self.ui.xafs3_stop.setValue(0)
+            self.pe_start.setValue(0)
+            self.xanes_start.setValue(0)
+            self.xafs1_start.setValue(0)
+            self.xafs2_start.setValue(0)
+            self.xafs3_start.setValue(0)
+            self.pe_stop.setValue(0)
+            self.xanes_stop.setValue(0)
+            self.xafs1_stop.setValue(0)
+            self.xafs2_stop.setValue(0)
+            self.xafs3_stop.setValue(0)
 
 
     ############################ Element Activated #########################
@@ -184,20 +184,20 @@ class MyApp(QMainWindow):
         global element
         element = xraylib.SymbolToAtomicNumber(text)
         if xraylib.EdgeEnergy(element, xraylib.K_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.K_SHELL) <= 25:
-            self.ui.edge.setCurrentIndex(0)
-            self.ui.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.K_SHELL))
+            self.edge.setCurrentIndex(0)
+            self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.K_SHELL))
         else:
             if xraylib.EdgeEnergy(element, xraylib.L1_SHELL) >= 4.5 and xraylib.EdgeEnergy(element,xraylib.L1_SHELL) <= 25:
-                self.ui.edge.setCurrentIndex(1)
-                self.ui.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L1_SHELL))
+                self.edge.setCurrentIndex(1)
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L1_SHELL))
             else:
                 if xraylib.EdgeEnergy(element, xraylib.L2_SHELL) >= 4.5 and xraylib.EdgeEnergy(element,xraylib.L2_SHELL) <= 25:
-                    self.ui.edge.setCurrentIndex(2)
-                    self.ui.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L2_SHELL))
+                    self.edge.setCurrentIndex(2)
+                    self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L2_SHELL))
                 else:
                     if xraylib.EdgeEnergy(element, xraylib.L3_SHELL) >= 4.5 and xraylib.EdgeEnergy(element,xraylib.L3_SHELL) <= 25:
-                        self.ui.edge.setCurrentIndex(3)
-                        self.ui.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L3_SHELL))
+                        self.edge.setCurrentIndex(3)
+                        self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L3_SHELL))
 
 
     ############################# Edge Activated ###############################
@@ -210,24 +210,24 @@ class MyApp(QMainWindow):
         edge = str(text)
         if edge == 'K':
             if xraylib.EdgeEnergy(element, xraylib.K_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.K_SHELL) <= 25:
-                self.ui.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.K_SHELL))
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.K_SHELL))
             else:
-                self.ui.edge_energy.setValue(0)
+                self.edge_energy.setValue(0)
         if edge == 'L1':
             if xraylib.EdgeEnergy(element, xraylib.L1_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.L1_SHELL) <= 25:
-                self.ui.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L1_SHELL))
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L1_SHELL))
             else:
-                self.ui.edge_energy.setValue(0)
+                self.edge_energy.setValue(0)
         if edge == 'L2':
             if xraylib.EdgeEnergy(element, xraylib.L2_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.L2_SHELL) <= 25:
-                self.ui.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L2_SHELL))
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L2_SHELL))
             else:
-                self.ui.edge_energy.setValue(0)
+                self.edge_energy.setValue(0)
         if edge == 'L3':
             if xraylib.EdgeEnergy(element, xraylib.L3_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.L3_SHELL) <= 25:
-                self.ui.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L3_SHELL))
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L3_SHELL))
             else:
-                self.ui.edge_energy.setValue(0)
+                self.edge_energy.setValue(0)
 
 
     ##################### Stop Limits #########################
@@ -240,21 +240,21 @@ class MyApp(QMainWindow):
         :param xafs3_start: (float) start of xafs3 region
         :return: limits the stop of each region to be greater than the start
         '''
-        pe_start = float(self.ui.pe_start.text())
-        xanes_start = float(self.ui.xanes_start.text())
-        xafs1_start = float(self.ui.xafs1_start.text())
-        xafs2_start = float(self.ui.xafs2_start.text())
-        xafs3_start = float(self.ui.xafs3_start.text())
+        pe_start = float(self.pe_start.text())
+        xanes_start = float(self.xanes_start.text())
+        xafs1_start = float(self.xafs1_start.text())
+        xafs2_start = float(self.xafs2_start.text())
+        xafs3_start = float(self.xafs3_start.text())
         if pe_start != 0:
-            self.ui.pe_stop.setRange(pe_start, 50)
+            self.pe_stop.setRange(pe_start, 50)
         if xanes_start != 0:
-            self.ui.xanes_stop.setRange(xanes_start, 50)
+            self.xanes_stop.setRange(xanes_start, 50)
         if xafs1_start != 0:
-            self.ui.xafs1_stop.setRange(xafs1_start, 50)
+            self.xafs1_stop.setRange(xafs1_start, 50)
         if xafs2_start != 0:
-            self.ui.xafs2_stop.setRange(xafs2_start, 50)
+            self.xafs2_stop.setRange(xafs2_start, 50)
         if xafs3_start != 0:
-            self.ui.xafs3_stop.setRange(xafs3_start, 50)
+            self.xafs3_stop.setRange(xafs3_start, 50)
 
 
     ##################### Set Start ###########################
@@ -266,18 +266,18 @@ class MyApp(QMainWindow):
         :param xafs2_stop: (float) stop of xafs2 region
         :return: sets the start of the next region to be the previous of the past region (only a suggestion)
         '''
-        pe_stop = float(self.ui.pe_stop.text())
-        xanes_stop = float(self.ui.xanes_stop.text())
-        xafs1_stop = float(self.ui.xafs1_stop.text())
-        xafs2_stop = float(self.ui.xafs2_stop.text())
+        pe_stop = float(self.pe_stop.text())
+        xanes_stop = float(self.xanes_stop.text())
+        xafs1_stop = float(self.xafs1_stop.text())
+        xafs2_stop = float(self.xafs2_stop.text())
         if pe_stop != 0:
-            self.ui.xanes_start.setValue(pe_stop)
+            self.xanes_start.setValue(pe_stop)
         if xanes_stop != 0:
-            self.ui.xafs1_start.setValue(xanes_stop)
+            self.xafs1_start.setValue(xanes_stop)
         if xafs1_stop != 0:
-            self.ui.xafs2_start.setValue(xafs1_stop)
+            self.xafs2_start.setValue(xafs1_stop)
         if xafs2_stop != 0:
-            self.ui.xafs3_start.setValue(xafs2_stop)
+            self.xafs3_start.setValue(xafs2_stop)
 
 
 ############################## Dwell Time #####################################
@@ -288,55 +288,55 @@ class MyApp(QMainWindow):
         :param dwell: (float) pre-edge dwell time
         :return: sets all other regions to pre-edge dwell
         '''
-        dwell = float(self.ui.pe_dwell.text())
-        self.ui.xanes_dwell.setValue(dwell)
-        self.ui.xafs1_dwell.setValue(dwell)
-        self.ui.xafs2_dwell.setValue(dwell)
-        self.ui.xafs3_dwell.setValue(dwell)
+        dwell = float(self.pe_dwell.text())
+        self.xanes_dwell.setValue(dwell)
+        self.xafs1_dwell.setValue(dwell)
+        self.xafs2_dwell.setValue(dwell)
+        self.xafs3_dwell.setValue(dwell)
 
     def dwell2(self):
         '''
         :param dwell: (float) xanes dwell time
         :return: sets all other regions to xanes dwell
         '''
-        dwell = float(self.ui.xanes_dwell.text())
-        self.ui.pe_dwell.setValue(dwell)
-        self.ui.xafs1_dwell.setValue(dwell)
-        self.ui.xafs2_dwell.setValue(dwell)
-        self.ui.xafs3_dwell.setValue(dwell)
+        dwell = float(self.xanes_dwell.text())
+        self.pe_dwell.setValue(dwell)
+        self.xafs1_dwell.setValue(dwell)
+        self.xafs2_dwell.setValue(dwell)
+        self.xafs3_dwell.setValue(dwell)
 
     def dwell3(self):
         '''
         :param dwell: (float) xafs1 dwell time
         :return: sets all other regions to xafs1 dwell
         '''
-        dwell = float(self.ui.xafs1_dwell.text())
-        self.ui.xanes_dwell.setValue(dwell)
-        self.ui.pe_dwell.setValue(dwell)
-        self.ui.xafs2_dwell.setValue(dwell)
-        self.ui.xafs3_dwell.setValue(dwell)
+        dwell = float(self.xafs1_dwell.text())
+        self.xanes_dwell.setValue(dwell)
+        self.pe_dwell.setValue(dwell)
+        self.xafs2_dwell.setValue(dwell)
+        self.xafs3_dwell.setValue(dwell)
 
     def dwell4(self):
         '''
         :param dwell: (float) xafs2 dwell time
         :return: sets all other regions to xafs2 dwell
         '''
-        dwell = float(self.ui.xafs2_dwell.text())
-        self.ui.xanes_dwell.setValue(dwell)
-        self.ui.xafs1_dwell.setValue(dwell)
-        self.ui.pe_dwell.setValue(dwell)
-        self.ui.xafs3_dwell.setValue(dwell)
+        dwell = float(self.xafs2_dwell.text())
+        self.xanes_dwell.setValue(dwell)
+        self.xafs1_dwell.setValue(dwell)
+        self.pe_dwell.setValue(dwell)
+        self.xafs3_dwell.setValue(dwell)
 
     def dwell5(self):
         '''
         :param dwell: (float) xafs3 dwell time
         :return: sets all other regions to xafs3 dwell
         '''
-        dwell = float(self.ui.xafs3_dwell.text())
-        self.ui.xanes_dwell.setValue(dwell)
-        self.ui.xafs1_dwell.setValue(dwell)
-        self.ui.xafs2_dwell.setValue(dwell)
-        self.ui.pe_dwell.setValue(dwell)
+        dwell = float(self.xafs3_dwell.text())
+        self.xanes_dwell.setValue(dwell)
+        self.xafs1_dwell.setValue(dwell)
+        self.xafs2_dwell.setValue(dwell)
+        self.pe_dwell.setValue(dwell)
 
 
 ############################# Points ##################################
@@ -363,52 +363,52 @@ class MyApp(QMainWindow):
         :param xafs3_stop: (float) xafs3 region stop
         :return: solves for the number of points of every region based upon what parameters are supplied.
         '''
-        edge = float(self.ui.edge_energy.text())
-        mode = self.ui.mode.currentText()
-        pe_step = float(self.ui.pe_step.text())
-        xanes_step = float(self.ui.xanes_step.text())
-        xafs1_step = float(self.ui.xafs1_step.text())
-        xafs2_step = float(self.ui.xafs2_step.text())
-        xafs3_step = float(self.ui.xafs3_step.text())
+        edge = float(self.edge_energy.text())
+        mode = self.mode.currentText()
+        pe_step = float(self.pe_step.text())
+        xanes_step = float(self.xanes_step.text())
+        xafs1_step = float(self.xafs1_step.text())
+        xafs2_step = float(self.xafs2_step.text())
+        xafs3_step = float(self.xafs3_step.text())
         if pe_step != 0:
             if mode == 'Absolute':
-                pe_start = float(self.ui.pe_start.text())
-                pe_stop = float(self.ui.pe_stop.text())
+                pe_start = float(self.pe_start.text())
+                pe_stop = float(self.pe_stop.text())
             else:
-                pe_start = edge + float(self.ui.pe_start.text())
-                pe_stop = edge + float(self.ui.pe_stop.text())
-            self.ui.pe_npts.setValue(PTShelper(pe_start, pe_stop, pe_step))
+                pe_start = edge + float(self.pe_start.text())
+                pe_stop = edge + float(self.pe_stop.text())
+            self.pe_npts.setValue(PTShelper(pe_start, pe_stop, pe_step))
         if xanes_step != 0:
             if mode == 'Absolute':
-                xanes_start = float(self.ui.xanes_start.text())
-                xanes_stop = float(self.ui.xanes_stop.text())
+                xanes_start = float(self.xanes_start.text())
+                xanes_stop = float(self.xanes_stop.text())
             else:
-                xanes_start = edge + float(self.ui.xanes_start.text())
-                xanes_stop = edge + float(self.ui.xanes_stop.text())
-            self.ui.xanes_npts.setValue(PTShelper(xanes_start, xanes_stop, xanes_step))
+                xanes_start = edge + float(self.xanes_start.text())
+                xanes_stop = edge + float(self.xanes_stop.text())
+            self.xanes_npts.setValue(PTShelper(xanes_start, xanes_stop, xanes_step))
         if xafs1_step != 0:
             if mode == 'Absolute':
-                xafs1_start = float(self.ui.xafs1_start.text())
-                xafs1_stop = float(self.ui.xafs1_stop.text())
+                xafs1_start = float(self.xafs1_start.text())
+                xafs1_stop = float(self.xafs1_stop.text())
             else:
-                xafs1_start = edge + float(self.ui.xafs1_start.text())
-                xafs1_stop = edge + float(self.ui.xafs1_stop.text())
-            self.ui.xafs1_npts.setValue(PTShelper(xafs1_start, xafs1_stop, xafs1_step))
+                xafs1_start = edge + float(self.xafs1_start.text())
+                xafs1_stop = edge + float(self.xafs1_stop.text())
+            self.xafs1_npts.setValue(PTShelper(xafs1_start, xafs1_stop, xafs1_step))
         if xafs2_step != 0:
             if mode == 'Absolute':
-                xafs2_start = float(self.ui.xafs2_start.text())
-                xafs2_stop = float(self.ui.xafs2_stop.text())
+                xafs2_start = float(self.xafs2_start.text())
+                xafs2_stop = float(self.xafs2_stop.text())
             else:
-                xafs2_start = edge + float(self.ui.xafs2_start.text())
-                xafs2_stop = edge + float(self.ui.xafs2_stop.text())
-            self.ui.xafs2_npts.setValue(PTShelper(xafs2_start, xafs2_stop, xafs2_step))
+                xafs2_start = edge + float(self.xafs2_start.text())
+                xafs2_stop = edge + float(self.xafs2_stop.text())
+            self.xafs2_npts.setValue(PTShelper(xafs2_start, xafs2_stop, xafs2_step))
         if mode == 'Absolute':
-            xafs3_start = float(self.ui.xafs3_start.text())
-            xafs3_stop = float(self.ui.xafs3_stop.text())
+            xafs3_start = float(self.xafs3_start.text())
+            xafs3_stop = float(self.xafs3_stop.text())
         else:
-            xafs3_start = edge + float(self.ui.xafs3_start.text())
-            xafs3_stop = edge + float(self.ui.xafs3_stop.text())
-        self.ui.xafs3_npts.setValue(PTShelper(xafs3_start, xafs3_stop, xafs3_step))
+            xafs3_start = edge + float(self.xafs3_start.text())
+            xafs3_stop = edge + float(self.xafs3_stop.text())
+        self.xafs3_npts.setValue(PTShelper(xafs3_start, xafs3_stop, xafs3_step))
 
 
     ########################### Steps ###################################
@@ -435,53 +435,53 @@ class MyApp(QMainWindow):
         :param xafs3_stop: (float) xafs3 region stop
         :return: solves for the number of steps of every region based upon what parameters are supplied.
         '''
-        edge = float(self.ui.edge_energy.text())
-        mode = self.ui.mode.currentText()
-        pe_npts = float(self.ui.pe_npts.text())
-        xanes_npts = float(self.ui.xanes_npts.text())
-        xafs1_npts = float(self.ui.xafs1_npts.text())
-        xafs2_npts = float(self.ui.xafs2_npts.text())
-        xafs3_npts = float(self.ui.xafs3_npts.text())
+        edge = float(self.edge_energy.text())
+        mode = self.mode.currentText()
+        pe_npts = float(self.pe_npts.text())
+        xanes_npts = float(self.xanes_npts.text())
+        xafs1_npts = float(self.xafs1_npts.text())
+        xafs2_npts = float(self.xafs2_npts.text())
+        xafs3_npts = float(self.xafs3_npts.text())
         if pe_npts != 0:
             if mode == 'Absolute':
-                pe_start = float(self.ui.pe_start.text())
-                pe_stop = float(self.ui.pe_stop.text())
+                pe_start = float(self.pe_start.text())
+                pe_stop = float(self.pe_stop.text())
             else:
-                pe_start = edge + float(self.ui.pe_start.text())
-                pe_stop = edge + float(self.ui.pe_stop.text())
-            self.ui.pe_step.setValue(STEPShelper(pe_start,pe_stop,pe_npts))
+                pe_start = edge + float(self.pe_start.text())
+                pe_stop = edge + float(self.pe_stop.text())
+            self.pe_step.setValue(STEPShelper(pe_start,pe_stop,pe_npts))
         if xanes_npts != 0:
             if mode == 'Absolute':
-                xanes_start = float(self.ui.xanes_start.text())
-                xanes_stop = float(self.ui.xanes_stop.text())
+                xanes_start = float(self.xanes_start.text())
+                xanes_stop = float(self.xanes_stop.text())
             else:
-                xanes_start = edge + float(self.ui.xanes_start.text())
-                xanes_stop = edge + float(self.ui.xanes_stop.text())
-            self.ui.xanes_step.setValue(STEPShelper(xanes_start,xanes_stop,xanes_npts))
+                xanes_start = edge + float(self.xanes_start.text())
+                xanes_stop = edge + float(self.xanes_stop.text())
+            self.xanes_step.setValue(STEPShelper(xanes_start,xanes_stop,xanes_npts))
         if xafs1_npts != 0:
             if mode == 'Absolute':
-                xafs1_start = float(self.ui.xafs1_start.text())
-                xafs1_stop = float(self.ui.xafs1_stop.text())
+                xafs1_start = float(self.xafs1_start.text())
+                xafs1_stop = float(self.xafs1_stop.text())
             else:
-                xafs1_start = edge + float(self.ui.xafs1_start.text())
-                xafs1_stop = edge + float(self.ui.xafs1_stop.text())
-            self.ui.xafs1_step.setValue(STEPShelper(xafs1_start, xafs1_stop, xafs1_npts))
+                xafs1_start = edge + float(self.xafs1_start.text())
+                xafs1_stop = edge + float(self.xafs1_stop.text())
+            self.xafs1_step.setValue(STEPShelper(xafs1_start, xafs1_stop, xafs1_npts))
         if xafs2_npts != 0:
             if mode == 'Absolute':
-                xafs2_start = float(self.ui.xafs2_start.text())
-                xafs2_stop = float(self.ui.xafs2_stop.text())
+                xafs2_start = float(self.xafs2_start.text())
+                xafs2_stop = float(self.xafs2_stop.text())
             else:
-                xafs2_start = edge + float(self.ui.xafs2_start.text())
-                xafs2_stop = edge + float(self.ui.xafs2_stop.text())
-            self.ui.xafs2_step.setValue(STEPShelper(xafs2_start, xafs2_stop, xafs2_npts))
+                xafs2_start = edge + float(self.xafs2_start.text())
+                xafs2_stop = edge + float(self.xafs2_stop.text())
+            self.xafs2_step.setValue(STEPShelper(xafs2_start, xafs2_stop, xafs2_npts))
         if xafs3_npts != 0:
             if mode == 'Absolute':
-                xafs3_start = float(self.ui.xafs3_start.text())
-                xafs3_stop = float(self.ui.xafs3_stop.text())
+                xafs3_start = float(self.xafs3_start.text())
+                xafs3_stop = float(self.xafs3_stop.text())
             else:
-                xafs3_start = edge + float(self.ui.xafs3_start.text())
-                xafs3_stop = edge + float(self.ui.xafs3_stop.text())
-            self.ui.xafs3_step.setValue(STEPShelper(xafs3_start, xafs3_stop, xafs3_npts))
+                xafs3_start = edge + float(self.xafs3_start.text())
+                xafs3_stop = edge + float(self.xafs3_stop.text())
+            self.xafs3_step.setValue(STEPShelper(xafs3_start, xafs3_stop, xafs3_npts))
 
 
     ##############################Calculates Scan Time ###################################
@@ -511,55 +511,55 @@ class MyApp(QMainWindow):
                                         the total overhead for the scan
         :return: solves for the predicted scan time
         '''
-        edge = float(self.ui.edge_energy.text())
-        mode = self.ui.mode.currentText()
-        pe_start = float(self.ui.pe_start.text())
-        pe_stop = float(self.ui.pe_stop.text())
-        xanes_start = float(self.ui.xanes_start.text())
-        xanes_stop = float(self.ui.xanes_stop.text())
-        xafs1_start = float(self.ui.xafs1_start.text())
-        xafs1_stop = float(self.ui.xafs1_stop.text())
-        xafs2_start = float(self.ui.xafs2_start.text())
-        xafs2_stop = float(self.ui.xafs2_stop.text())
-        xafs3_start = float(self.ui.xafs3_start.text())
-        xafs3_stop = float(self.ui.xafs3_stop.text())
-        pe_step = float(self.ui.pe_step.text())
-        xanes_step = float(self.ui.xanes_step.text())
-        xafs1_step = float(self.ui.xafs1_step.text())
-        xafs2_step = float(self.ui.xafs2_step.text())
-        xafs3_step = float(self.ui.xafs3_step.text())
+        edge = float(self.edge_energy.text())
+        mode = self.mode.currentText()
+        pe_start = float(self.pe_start.text())
+        pe_stop = float(self.pe_stop.text())
+        xanes_start = float(self.xanes_start.text())
+        xanes_stop = float(self.xanes_stop.text())
+        xafs1_start = float(self.xafs1_start.text())
+        xafs1_stop = float(self.xafs1_stop.text())
+        xafs2_start = float(self.xafs2_start.text())
+        xafs2_stop = float(self.xafs2_stop.text())
+        xafs3_start = float(self.xafs3_start.text())
+        xafs3_stop = float(self.xafs3_stop.text())
+        pe_step = float(self.pe_step.text())
+        xanes_step = float(self.xanes_step.text())
+        xafs1_step = float(self.xafs1_step.text())
+        xafs2_step = float(self.xafs2_step.text())
+        xafs3_step = float(self.xafs3_step.text())
         if mode == 'Relative':
-            pe_start = edge + float(self.ui.pe_start.text())
-            pe_stop = edge + float(self.ui.pe_stop.text())
+            pe_start = edge + float(self.pe_start.text())
+            pe_stop = edge + float(self.pe_stop.text())
         Erange(pe_start, pe_stop, pe_step)
         if xanes_start != 0 and xanes_stop != 0:
             if mode == 'Relative':
-                xanes_start = edge + float(self.ui.xanes_start.text())
-                xanes_stop = edge + float(self.ui.xanes_stop.text())
+                xanes_start = edge + float(self.xanes_start.text())
+                xanes_stop = edge + float(self.xanes_stop.text())
             Erange(xanes_start, xanes_stop, xanes_step)
         if xafs1_start != 0 and xafs1_stop != 0:
             if mode == 'Relative':
-                xafs1_start = edge + float(self.ui.xafs1_start.text())
-                xafs1_stop = edge + float(self.ui.xafs1_stop.text())
+                xafs1_start = edge + float(self.xafs1_start.text())
+                xafs1_stop = edge + float(self.xafs1_stop.text())
             Erange(xafs1_start, xafs1_stop, xafs1_step)
         if xafs2_start != 0 and xafs2_stop != 0:
             if mode == 'Relative':
-                xafs2_start = edge + float(self.ui.xafs2_start.text())
-                xafs2_stop = edge + float(self.ui.xafs2_stop.text())
+                xafs2_start = edge + float(self.xafs2_start.text())
+                xafs2_stop = edge + float(self.xafs2_stop.text())
             Erange(xafs2_start, xafs2_stop, xafs2_step)
         if xafs3_start != 0 and xafs3_stop != 0:
             if mode == 'Relative':
-                xafs3_start = edge + float(self.ui.xafs3_start.text())
-                xafs3_stop = edge + float(self.ui.xafs3_stop.text())
+                xafs3_start = edge + float(self.xafs3_start.text())
+                xafs3_stop = edge + float(self.xafs3_stop.text())
             Erange(xafs3_start, xafs3_stop,  xafs3_step)
         num_pts = getpts()
-        dwell = float(self.ui.pe_dwell.text())
+        dwell = float(self.pe_dwell.text())
         with open('testingjson.txt') as f:
             data = json.load(f)
             total_overhead = data['XAS']['overhead']
         scan_sec = num_pts * (dwell + total_overhead)
-        self.ui.scan_time.setText(str(datetime.timedelta(seconds=round(scan_sec))))
-        self.ui.results.setText(str(geterange()) + '\n' + str(getestep()))
+        self.scan_time.setText(str(datetime.timedelta(seconds=round(scan_sec))))
+        self.results.setText(str(geterange()) + '\n' + str(getestep()))
 
 
 
@@ -573,11 +573,11 @@ class MyApp(QMainWindow):
         :return: xanes_plan: Running a XANES scan
         '''
         dets = [det]
-        #plan = spiral(dets, motor1,motor2, x_start = float(self.ui.pe_start.text()),y_start = float(self.ui.pe_start.text()), x_range = float(self.ui.pe_stop.text()), y_range = float(self.ui.pe_stop.text()), dr = float(self.ui.pe_step.text()), nth = float(self.ui.pe_npts.text()))
-        #return count, ([dets]), {'num': int(self.ui.num_scans.text())}
-        return scan, (dets, motor,float(self.ui.pe_start.text()),  float(self.ui.pe_stop.text())), {'num': float(self.ui.pe_npts.text())}
+        #plan = spiral(dets, motor1,motor2, x_start = float(self.pe_start.text()),y_start = float(self.pe_start.text()), x_range = float(self.pe_stop.text()), y_range = float(self.pe_stop.text()), dr = float(self.pe_step.text()), nth = float(self.pe_npts.text()))
+        #return count, ([dets]), {'num': int(self.num_scans.text())}
+        return scan, (dets, motor,float(self.pe_start.text()),  float(self.pe_stop.text())), {'num': float(self.pe_npts.text())}
         #return plot_raster_path, plan, {'x_motor': motor1, 'y_motor': motor2}
-        #return xanes_plan, {'erange' : geterange().tolist(), 'estep' : getestep().tolist(), 'acqtime' : float(self.ui.pe_dwell.text()), 'samplename' :str(self.ui.sample_name.text()), 'filename' : str(self.ui.file_name.text())}
+        #return xanes_plan, {'erange' : geterange().tolist(), 'estep' : getestep().tolist(), 'acqtime' : float(self.pe_dwell.text()), 'samplename' :str(self.sample_name.text()), 'filename' : str(self.file_name.text())}
 
 
     # Running  the scans
@@ -589,25 +589,25 @@ class MyApp(QMainWindow):
         pixmap = LivePlot('det', 'motor')
         RE(pln(*args, **kwargs),pixmap)
         pixmap = QPixmap(pixmap)
-        self.ui.results.setPixmap(pixmap)
+        self.results.setPixmap(pixmap)
 
         header = db[-1]
         string = str(header.table())
-        self.ui.results.setText(string)
+        self.results.setText(string)
         #  #RE(pln(*args, **kwargs))
         # #dets = [det]
         #
-        # plan = spiral(dets, motor1, motor2, x_start=float(self.ui.pe_start.text()),
-        #               y_start=float(self.ui.pe_start.text()), x_range=float(self.ui.pe_stop.text()),
-        #               y_range=float(self.ui.pe_stop.text()), dr=float(self.ui.pe_step.text()),
-        #               nth=float(self.ui.pe_npts.text()))
+        # plan = spiral(dets, motor1, motor2, x_start=float(self.pe_start.text()),
+        #               y_start=float(self.pe_start.text()), x_range=float(self.pe_stop.text()),
+        #               y_range=float(self.pe_stop.text()), dr=float(self.pe_step.text()),
+        #               nth=float(self.pe_npts.text()))
         # # plan = spiral([det], motor1, motor2, x_start=0.0, y_start=0.0, x_range=1.,
         # # y_range=1.0, dr=0.1, nth=10)
         # plot_raster_path(plan, 'motor1', 'motor2', probe_size=.01)
         #
-        # #num = int(self.ui.pe_npts.text())
-        # #start = float(self.ui.pe_start.text())
-        # #stop = float(self.ui.pe_stop.text())
+        # #num = int(self.pe_npts.text())
+        # #start = float(self.pe_start.text())
+        # #stop = float(self.pe_stop.text())
         # #RE(xanes_plan(erange,estep,samplename,filename,dwell))
         # #dets = [det]
         # #RE(scan(dets, motor, start, stop, num))
@@ -616,17 +616,20 @@ class MyApp(QMainWindow):
         # #works for scan
         #
         # dets = [det]
-        # start = float(self.ui.pe_start.text())
-        # stop = float(self.ui.pe_stop.text())
-        # num = float(self.ui.pe_npts.text())
+        # start = float(self.pe_start.text())
+        # stop = float(self.pe_stop.text())
+        # num = float(self.pe_npts.text())
         # RE(scan(dets, motor, start, stop, num))
         #
         # # plot_raster_path(plan, 'motor1', 'motor2', probe_size=.01)
         # header = db[-1]
         # string = str(header.table())
-        # self.ui.results.setText(string)
+        # self.results.setText(string)
 
 ###############################################################################################
 
-app = QApplication(sys.argv)
-window = MyApp()
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    w = Spectroscopy()
+    w.show()
+    sys.exit(app.exec_())
