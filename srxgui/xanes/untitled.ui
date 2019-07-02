@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1132</width>
-    <height>692</height>
+    <width>1219</width>
+    <height>829</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>20</x>
       <y>10</y>
-      <width>1031</width>
-      <height>641</height>
+      <width>1351</width>
+      <height>831</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -104,14 +104,14 @@
        <rect>
         <x>10</x>
         <y>70</y>
-        <width>1011</width>
-        <height>561</height>
+        <width>1171</width>
+        <height>701</height>
        </rect>
       </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="spectroscopy" name="Xanes">
+      <widget class="spectroscopy2" name="Xanes">
        <attribute name="title">
         <string>Spectroscopy</string>
        </attribute>
@@ -145,23 +145,23 @@
     </widget>
    </widget>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1132</width>
+     <width>1219</width>
      <height>21</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>spectroscopy</class>
+   <class>spectroscopy2</class>
    <extends>QWidget</extends>
-   <header>spectroscopy.h</header>
+   <header>spectroscopy2.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

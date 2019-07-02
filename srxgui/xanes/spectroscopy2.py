@@ -15,10 +15,10 @@ from bluesky.callbacks.mpl_plotting import LivePlot
 from PyQt5.QtGui import QIcon, QPixmap
 
 
-Ui_MainWindow, QtBaseClass = uic.loadUiType('spectroscopy.ui')
+Ui_MainWindow, QtBaseClass = uic.loadUiType('xanes.ui')
 
 
-class spectroscopy(QtBaseClass, Ui_MainWindow):
+class spectroscopy2(QtBaseClass, Ui_MainWindow):
 
     global element
     element = 0
@@ -27,20 +27,24 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         super(QtBaseClass, self).__init__()
         #self = Ui_MainWindow()
         self.setupUi(self)
+        self.edge_energy.setDisabled(True)
         self.start_scan.clicked.connect(self.CalculateTime)
-        #self.start_scan.clicked.connect(self.plan1)
+        self.start_scan.clicked.connect(self.plan1)
         self.index.clicked.connect(self.page2)
         self.index2.clicked.connect(self.page1)
         self.index3.clicked.connect(self.page1)
         self.choice.activated[str].connect(self.onActivated)
         self.edge.activated[str].connect(self.onChanged)
+        self.xafs1_units.activated[str].connect(self.onUnits1)
+        self.xafs2_units.activated[str].connect(self.onUnits2)
+        self.xafs3_units.activated[str].connect(self.onUnits3)
         self.normalized2.clicked.connect(self.normalizedgraph)
         self.normalized3.clicked.connect(self.normalizedgraph)
         self.raw1.clicked.connect(self.rawgraph)
         self.raw3.clicked.connect(self.rawgraph)
         self.count1.clicked.connect(self.countgraph)
         self.count2.clicked.connect(self.countgraph)
-
+        #self.location.toggled.connect(self.location)
 
     ##################### Regions ########################
 
@@ -50,6 +54,8 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         :return: disables/enables regions
         '''
         regions = int(self.num_regions.text())
+        mode = self.mode.currentText()
+        edge_energy = float(self.edge_energy.text())
         if regions == 1 or regions == 2 or regions == 3 or regions == 4:
             self.xafs3_start.setDisabled(True)
             self.xafs3_stop.setDisabled(True)
@@ -64,24 +70,36 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
                 self.xanes_step.setEnabled(True)
                 self.xanes_npts.setEnabled(True)
                 self.xanes_dwell.setEnabled(True)
-                self.xanes_start.setRange(-50,50)
-                self.xanes_stop.setRange(-50,50)
+                if mode == 'Absolute':
+                    self.xanes_start.setRange(4500, 25000)
+                    self.xanes_stop.setRange(4500, 25000)
+                if mode == 'Relative':
+                    self.xanes_start.setRange(4500 - edge_energy, 25000 - edge_energy)
+                    self.xanes_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
                 if regions == 3 or regions == 4:
                     self.xafs1_start.setEnabled(True)
                     self.xafs1_stop.setEnabled(True)
                     self.xafs1_step.setEnabled(True)
                     self.xafs1_npts.setEnabled(True)
                     self.xafs1_dwell.setEnabled(True)
-                    self.xafs1_start.setRange(-50,50)
-                    self.xafs1_stop.setRange(-50,50)
+                    if mode == 'Absolute':
+                        self.xafs1_start.setRange(4500, 25000)
+                        self.xafs1_stop.setRange(4500, 25000)
+                    if mode == 'Relative':
+                        self.xafs1_start.setRange(4500 - edge_energy, 25000 - edge_energy)
+                        self.xafs1_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
                     if regions == 4:
                         self.xafs2_start.setEnabled(True)
                         self.xafs2_stop.setEnabled(True)
                         self.xafs2_step.setEnabled(True)
                         self.xafs2_npts.setEnabled(True)
                         self.xafs2_dwell.setEnabled(True)
-                        self.xafs2_start.setRange(-50,50)
-                        self.xafs2_stop.setRange(-50,50)
+                        if mode == 'Absolute':
+                            self.xafs2_start.setRange(4500, 25000)
+                            self.xafs2_stop.setRange(4500, 25000)
+                        if mode == 'Relative':
+                            self.xafs2_start.setRange(4500 - edge_energy, 25000 - edge_energy)
+                            self.xafs2_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
         if regions == 1 or regions == 2 or regions == 3:
             self.xafs2_start.setDisabled(True)
             self.xafs2_stop.setDisabled(True)
@@ -112,9 +130,31 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
             self.xafs3_step.setEnabled(True)
             self.xafs3_npts.setEnabled(True)
             self.xafs3_dwell.setEnabled(True)
-            self.xafs3_start.setRange(-50,50)
-            self.xafs3_stop.setRange(-50,50)
+            if mode == 'Absolute':
+                self.xafs3_start.setRange(4500, 25000)
+                self.xafs3_stop.setRange(4500, 25000)
+            if mode == 'Relative':
+                self.xafs3_start.setRange(4500 - edge_energy, 25000 - edge_energy)
+                self.xafs3_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
 
+
+    #############################################################
+    #
+    # def location(self):
+    #     if self.location.isChecked():
+    #         self.x_motor.setDisabled(True)
+    #         self.y_motor.setDisabled(True)
+    #         self.z_motor.setDisabled(True)
+    #     else:
+    #         self.x_motor.setDisabled(False)
+    #         self.y_motor.setDisabled(False)
+    #         self.z_motor.setDisabled(False)
+    #     #     with open('testingjson.txt') as f:
+    #     #         data = json.load(f)
+    #     #         x_motor = data['beamline']['Sample Stages']['Coarse X']
+    #     #         y_motor = data['beamline']['Sample Stages']['Coarse Y']
+    #     #         z_motor = data['beamline']['Sample Stages']['Coarse Z']
+    #     #         self.x_motor.set
 
     ##################### Graph Widgets ##########################
 
@@ -136,31 +176,46 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         self.stackedWidget.setCurrentIndex(0)
 
 
-    ########################### Absolute #######################
+    ############################ Element Activated #########################
 
-    def absolute(self):
+    def onActivated(self, text):
         '''
-        :signal: set mode
-        :param: edge energy changed
-        :return: for Absolute
-                    sets all regions' start/stop values to edge energy
-                 for Relative
-                    sets all regions' start/stop values to 0
+        :param text: (str) choice of element
+        :param element: (int) element's atomic number (needed to obtain edge energy)
+        :return: sets an element's edge energy and a suggested edge (as long as it is in the range 4.5 - 25)
         '''
-        mode = self.mode.currentText()
+        global element
+        element = xraylib.SymbolToAtomicNumber(text)
+        self.edge_energy.setDisabled(False)
+        if xraylib.EdgeEnergy(element, xraylib.K_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.K_SHELL) <= 25:
+            self.edge.setCurrentIndex(0)
+            self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.K_SHELL)*1000)
+        else:
+            if xraylib.EdgeEnergy(element, xraylib.L1_SHELL) >= 4.5 and xraylib.EdgeEnergy(element,xraylib.L1_SHELL) <= 25:
+                self.edge.setCurrentIndex(1)
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L1_SHELL)*1000)
+            else:
+                if xraylib.EdgeEnergy(element, xraylib.L2_SHELL) >= 4.5 and xraylib.EdgeEnergy(element,xraylib.L2_SHELL) <= 25:
+                    self.edge.setCurrentIndex(2)
+                    self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L2_SHELL)*1000)
+                else:
+                    if xraylib.EdgeEnergy(element, xraylib.L3_SHELL) >= 4.5 and xraylib.EdgeEnergy(element,xraylib.L3_SHELL) <= 25:
+                        self.edge.setCurrentIndex(3)
+                        self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L3_SHELL)*1000)
+
         edge_energy = float(self.edge_energy.text())
-        if mode == 'Absolute':
-            self.pe_start.setValue(edge_energy)
-            self.xanes_start.setValue(edge_energy)
-            self.xafs1_start.setValue(edge_energy)
-            self.xafs2_start.setValue(edge_energy)
-            self.xafs3_start.setValue(edge_energy)
-            self.pe_stop.setValue(edge_energy)
-            self.xanes_stop.setValue(edge_energy)
-            self.xafs1_stop.setValue(edge_energy)
-            self.xafs2_stop.setValue(edge_energy)
-            self.xafs3_stop.setValue(edge_energy)
+        mode = self.mode.currentText()
         if mode == 'Relative':
+            self.pe_start.setRange(4500 - edge_energy, 25000 - edge_energy)
+            self.pe_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
+            self.xanes_start.setRange(4500 - edge_energy, 25000 - edge_energy)
+            self.xanes_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
+            self.xafs1_start.setRange(4500 - edge_energy, 25000 - edge_energy)
+            self.xafs1_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
+            self.xafs2_start.setRange(4500 - edge_energy, 25000 - edge_energy)
+            self.xafs2_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
+            self.xafs3_start.setRange(4500 - edge_energy, 25000 - edge_energy)
+            self.xafs3_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
             self.pe_start.setValue(0)
             self.xanes_start.setValue(0)
             self.xafs1_start.setValue(0)
@@ -172,33 +227,27 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
             self.xafs2_stop.setValue(0)
             self.xafs3_stop.setValue(0)
 
-
-    ############################ Element Activated #########################
-
-    def onActivated(self, text):
-        '''
-        :param text: (str) choice of element
-        :param element: (int) element's atomic number (needed to obtain edge energy)
-        :return: sets an element's edge energy and a suggested edge (as long as it is in the range 4.5 - 25)
-        '''
-        global element
-        element = xraylib.SymbolToAtomicNumber(text)
-        if xraylib.EdgeEnergy(element, xraylib.K_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.K_SHELL) <= 25:
-            self.edge.setCurrentIndex(0)
-            self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.K_SHELL))
-        else:
-            if xraylib.EdgeEnergy(element, xraylib.L1_SHELL) >= 4.5 and xraylib.EdgeEnergy(element,xraylib.L1_SHELL) <= 25:
-                self.edge.setCurrentIndex(1)
-                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L1_SHELL))
-            else:
-                if xraylib.EdgeEnergy(element, xraylib.L2_SHELL) >= 4.5 and xraylib.EdgeEnergy(element,xraylib.L2_SHELL) <= 25:
-                    self.edge.setCurrentIndex(2)
-                    self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L2_SHELL))
-                else:
-                    if xraylib.EdgeEnergy(element, xraylib.L3_SHELL) >= 4.5 and xraylib.EdgeEnergy(element,xraylib.L3_SHELL) <= 25:
-                        self.edge.setCurrentIndex(3)
-                        self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L3_SHELL))
-
+        if mode == 'Absolute':
+            self.pe_start.setRange(4500, 25000)
+            self.pe_stop.setRange(4500, 25000)
+            self.xanes_start.setRange(4500, 25000)
+            self.xanes_stop.setRange(4500, 25000)
+            self.xafs1_start.setRange(4500, 25000)
+            self.xafs1_stop.setRange(4500, 25000)
+            self.xafs2_start.setRange(4500, 25000)
+            self.xafs2_stop.setRange(4500, 25000)
+            self.xafs3_start.setRange(4500, 25000)
+            self.xafs3_stop.setRange(4500, 25000)
+            self.pe_start.setValue(edge_energy)
+            self.xanes_start.setValue(edge_energy)
+            self.xafs1_start.setValue(edge_energy)
+            self.xafs2_start.setValue(edge_energy)
+            self.xafs3_start.setValue(edge_energy)
+            self.pe_stop.setValue(edge_energy)
+            self.xanes_stop.setValue(edge_energy)
+            self.xafs1_stop.setValue(edge_energy)
+            self.xafs2_stop.setValue(edge_energy)
+            self.xafs3_stop.setValue(edge_energy)
 
     ############################# Edge Activated ###############################
 
@@ -210,24 +259,57 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         edge = str(text)
         if edge == 'K':
             if xraylib.EdgeEnergy(element, xraylib.K_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.K_SHELL) <= 25:
-                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.K_SHELL))
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.K_SHELL)*1000)
+                self.edge_energy.setDisabled(False)
             else:
-                self.edge_energy.setValue(0)
+                self.edge_energy.setDisabled(True)
         if edge == 'L1':
             if xraylib.EdgeEnergy(element, xraylib.L1_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.L1_SHELL) <= 25:
-                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L1_SHELL))
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L1_SHELL)*1000)
+                self.edge_energy.setDisabled(False)
             else:
-                self.edge_energy.setValue(0)
+                self.edge_energy.setDisabled(True)
         if edge == 'L2':
             if xraylib.EdgeEnergy(element, xraylib.L2_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.L2_SHELL) <= 25:
-                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L2_SHELL))
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L2_SHELL)*1000)
+                self.edge_energy.setDisabled(False)
             else:
-                self.edge_energy.setValue(0)
+                self.edge_energy.setDisabled(True)
         if edge == 'L3':
             if xraylib.EdgeEnergy(element, xraylib.L3_SHELL) >= 4.5 and xraylib.EdgeEnergy(element, xraylib.L3_SHELL) <= 25:
-                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L3_SHELL))
+                self.edge_energy.setValue(xraylib.EdgeEnergy(element, xraylib.L3_SHELL)*1000)
+                self.edge_energy.setDisabled(False)
             else:
-                self.edge_energy.setValue(0)
+                self.edge_energy.setDisabled(True)
+
+
+######################### k space ####################################
+
+    def onUnits1(self, text):
+        '''
+        :param text: (str) choice of units
+        :return: changes everything :(
+        '''
+        units = str(text)
+        if units == 'k':
+            self.xafs2_units.setCurrentIndex(1)
+            self.xafs3_units.setCurrentIndex(1)
+
+    def onUnits2(self,text):
+        '''
+        :param text: (str) choice of units
+        :return: changes everything :(
+        '''
+        units = str(text)
+        if units == 'k':
+            self.xafs3_units.setCurrentIndex(1)
+
+    def onUnits3(self,text):
+        '''
+        :param text: (str) choice of units
+        :return: changes everything :(
+        '''
+        units = str(text)
 
 
     ##################### Stop Limits #########################
@@ -240,21 +322,35 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         :param xafs3_start: (float) start of xafs3 region
         :return: limits the stop of each region to be greater than the start
         '''
+        mode = self.mode.currentText()
+        edge_energy = float(self.edge_energy.text())
         pe_start = float(self.pe_start.text())
         xanes_start = float(self.xanes_start.text())
         xafs1_start = float(self.xafs1_start.text())
         xafs2_start = float(self.xafs2_start.text())
         xafs3_start = float(self.xafs3_start.text())
-        if pe_start != 0:
-            self.pe_stop.setRange(pe_start, 50)
-        if xanes_start != 0:
-            self.xanes_stop.setRange(xanes_start, 50)
-        if xafs1_start != 0:
-            self.xafs1_stop.setRange(xafs1_start, 50)
-        if xafs2_start != 0:
-            self.xafs2_stop.setRange(xafs2_start, 50)
-        if xafs3_start != 0:
-            self.xafs3_stop.setRange(xafs3_start, 50)
+        if mode == 'Absolute':
+            if pe_start != 4500:
+                self.pe_stop.setRange(pe_start, 25000)
+            if xanes_start != 4500:
+                self.xanes_stop.setRange(xanes_start, 25000)
+            if xafs1_start != 4500:
+                self.xafs1_stop.setRange(xafs1_start, 25000)
+            if xafs2_start != 4500:
+                self.xafs2_stop.setRange(xafs2_start, 25000)
+            if xafs3_start != 4500:
+                self.xafs3_stop.setRange(xafs3_start, 25000)
+        if mode == 'Relative':
+            if pe_start != 4500:
+                self.pe_stop.setRange(pe_start, 25000 - edge_energy)
+            if xanes_start != 4500:
+                self.xanes_stop.setRange(xanes_start, 25000 - edge_energy)
+            if xafs1_start != 4500:
+                self.xafs1_stop.setRange(xafs1_start, 25000 - edge_energy)
+            if xafs2_start != 4500:
+                self.xafs2_stop.setRange(xafs2_start, 25000 - edge_energy)
+            if xafs3_start != 4500:
+                self.xafs3_stop.setRange(xafs3_start, 25000 - edge_energy)
 
 
     ##################### Set Start ###########################
@@ -270,13 +366,13 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         xanes_stop = float(self.xanes_stop.text())
         xafs1_stop = float(self.xafs1_stop.text())
         xafs2_stop = float(self.xafs2_stop.text())
-        if pe_stop != 0:
+        if pe_stop != 4500:
             self.xanes_start.setValue(pe_stop)
-        if xanes_stop != 0:
+        if xanes_stop != 4500:
             self.xafs1_start.setValue(xanes_stop)
-        if xafs1_stop != 0:
+        if xafs1_stop != 4500:
             self.xafs2_start.setValue(xafs1_stop)
-        if xafs2_stop != 0:
+        if xafs2_stop != 4500:
             self.xafs3_start.setValue(xafs2_stop)
 
 
@@ -370,46 +466,48 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         xafs1_step = float(self.xafs1_step.text())
         xafs2_step = float(self.xafs2_step.text())
         xafs3_step = float(self.xafs3_step.text())
-        if pe_step != 0:
-            if mode == 'Absolute':
-                pe_start = float(self.pe_start.text())
-                pe_stop = float(self.pe_stop.text())
-            else:
-                pe_start = edge + float(self.pe_start.text())
-                pe_stop = edge + float(self.pe_stop.text())
-            self.pe_npts.setValue(PTShelper(pe_start, pe_stop, pe_step))
-        if xanes_step != 0:
-            if mode == 'Absolute':
-                xanes_start = float(self.xanes_start.text())
-                xanes_stop = float(self.xanes_stop.text())
-            else:
-                xanes_start = edge + float(self.xanes_start.text())
-                xanes_stop = edge + float(self.xanes_stop.text())
-            self.xanes_npts.setValue(PTShelper(xanes_start, xanes_stop, xanes_step))
-        if xafs1_step != 0:
-            if mode == 'Absolute':
-                xafs1_start = float(self.xafs1_start.text())
-                xafs1_stop = float(self.xafs1_stop.text())
-            else:
-                xafs1_start = edge + float(self.xafs1_start.text())
-                xafs1_stop = edge + float(self.xafs1_stop.text())
-            self.xafs1_npts.setValue(PTShelper(xafs1_start, xafs1_stop, xafs1_step))
-        if xafs2_step != 0:
-            if mode == 'Absolute':
-                xafs2_start = float(self.xafs2_start.text())
-                xafs2_stop = float(self.xafs2_stop.text())
-            else:
-                xafs2_start = edge + float(self.xafs2_start.text())
-                xafs2_stop = edge + float(self.xafs2_stop.text())
-            self.xafs2_npts.setValue(PTShelper(xafs2_start, xafs2_stop, xafs2_step))
+        if mode == 'Absolute':
+            pe_start = float(self.pe_start.text())
+            pe_stop = float(self.pe_stop.text())
+        else:
+            pe_start = edge + float(self.pe_start.text())
+            pe_stop = edge + float(self.pe_stop.text())
+        self.pe_npts.setRange(1, PTShelper(pe_start, pe_stop, 0.1))
+        self.pe_npts.setValue(PTShelper(pe_start, pe_stop, pe_step))
+        if mode == 'Absolute':
+            xanes_start = float(self.xanes_start.text())
+            xanes_stop = float(self.xanes_stop.text())
+        else:
+            xanes_start = edge + float(self.xanes_start.text())
+            xanes_stop = edge + float(self.xanes_stop.text())
+        self.xanes_npts.setRange(1, PTShelper(xanes_start, xanes_stop, 0.1))
+        self.xanes_npts.setValue(PTShelper(xanes_start, xanes_stop, xanes_step))
+
+        if mode == 'Absolute':
+            xafs1_start = float(self.xafs1_start.text())
+            xafs1_stop = float(self.xafs1_stop.text())
+        else:
+            xafs1_start = edge + float(self.xafs1_start.text())
+            xafs1_stop = edge + float(self.xafs1_stop.text())
+        self.xafs1_npts.setRange(1, PTShelper(xafs1_start, xafs1_stop, 0.1))
+        self.xafs1_npts.setValue(PTShelper(xafs1_start, xafs1_stop, xafs1_step))
+
+        if mode == 'Absolute':
+            xafs2_start = float(self.xafs2_start.text())
+            xafs2_stop = float(self.xafs2_stop.text())
+        else:
+            xafs2_start = edge + float(self.xafs2_start.text())
+            xafs2_stop = edge + float(self.xafs2_stop.text())
+        self.xafs2_npts.setRange(1, PTShelper(xafs2_start, xafs2_stop, 0.1))
+        self.xafs2_npts.setValue(PTShelper(xafs2_start, xafs2_stop, xafs2_step))
         if mode == 'Absolute':
             xafs3_start = float(self.xafs3_start.text())
             xafs3_stop = float(self.xafs3_stop.text())
         else:
             xafs3_start = edge + float(self.xafs3_start.text())
             xafs3_stop = edge + float(self.xafs3_stop.text())
+        self.xafs3_npts.setRange(1, PTShelper(xafs3_start, xafs3_stop, 0.1))
         self.xafs3_npts.setValue(PTShelper(xafs3_start, xafs3_stop, xafs3_step))
-
 
     ########################### Steps ###################################
     #Requires helper function
@@ -442,46 +540,45 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         xafs1_npts = float(self.xafs1_npts.text())
         xafs2_npts = float(self.xafs2_npts.text())
         xafs3_npts = float(self.xafs3_npts.text())
-        if pe_npts != 0:
-            if mode == 'Absolute':
-                pe_start = float(self.pe_start.text())
-                pe_stop = float(self.pe_stop.text())
-            else:
-                pe_start = edge + float(self.pe_start.text())
-                pe_stop = edge + float(self.pe_stop.text())
-            self.pe_step.setValue(STEPShelper(pe_start,pe_stop,pe_npts))
-        if xanes_npts != 0:
-            if mode == 'Absolute':
-                xanes_start = float(self.xanes_start.text())
-                xanes_stop = float(self.xanes_stop.text())
-            else:
-                xanes_start = edge + float(self.xanes_start.text())
-                xanes_stop = edge + float(self.xanes_stop.text())
-            self.xanes_step.setValue(STEPShelper(xanes_start,xanes_stop,xanes_npts))
-        if xafs1_npts != 0:
-            if mode == 'Absolute':
-                xafs1_start = float(self.xafs1_start.text())
-                xafs1_stop = float(self.xafs1_stop.text())
-            else:
-                xafs1_start = edge + float(self.xafs1_start.text())
-                xafs1_stop = edge + float(self.xafs1_stop.text())
-            self.xafs1_step.setValue(STEPShelper(xafs1_start, xafs1_stop, xafs1_npts))
-        if xafs2_npts != 0:
-            if mode == 'Absolute':
-                xafs2_start = float(self.xafs2_start.text())
-                xafs2_stop = float(self.xafs2_stop.text())
-            else:
-                xafs2_start = edge + float(self.xafs2_start.text())
-                xafs2_stop = edge + float(self.xafs2_stop.text())
-            self.xafs2_step.setValue(STEPShelper(xafs2_start, xafs2_stop, xafs2_npts))
-        if xafs3_npts != 0:
-            if mode == 'Absolute':
-                xafs3_start = float(self.xafs3_start.text())
-                xafs3_stop = float(self.xafs3_stop.text())
-            else:
-                xafs3_start = edge + float(self.xafs3_start.text())
-                xafs3_stop = edge + float(self.xafs3_stop.text())
-            self.xafs3_step.setValue(STEPShelper(xafs3_start, xafs3_stop, xafs3_npts))
+        if mode == 'Absolute':
+            pe_start = float(self.pe_start.text())
+            pe_stop = float(self.pe_stop.text())
+        else:
+            pe_start = edge + float(self.pe_start.text())
+            pe_stop = edge + float(self.pe_stop.text())
+        self.pe_step.setValue(STEPShelper(pe_start,pe_stop,pe_npts))
+
+        if mode == 'Absolute':
+            xanes_start = float(self.xanes_start.text())
+            xanes_stop = float(self.xanes_stop.text())
+        else:
+            xanes_start = edge + float(self.xanes_start.text())
+            xanes_stop = edge + float(self.xanes_stop.text())
+        self.xanes_step.setValue(STEPShelper(xanes_start,xanes_stop,xanes_npts))
+
+        if mode == 'Absolute':
+            xafs1_start = float(self.xafs1_start.text())
+            xafs1_stop = float(self.xafs1_stop.text())
+        else:
+            xafs1_start = edge + float(self.xafs1_start.text())
+            xafs1_stop = edge + float(self.xafs1_stop.text())
+        self.xafs1_step.setValue(STEPShelper(xafs1_start, xafs1_stop, xafs1_npts))
+
+        if mode == 'Absolute':
+            xafs2_start = float(self.xafs2_start.text())
+            xafs2_stop = float(self.xafs2_stop.text())
+        else:
+            xafs2_start = edge + float(self.xafs2_start.text())
+            xafs2_stop = edge + float(self.xafs2_stop.text())
+        self.xafs2_step.setValue(STEPShelper(xafs2_start, xafs2_stop, xafs2_npts))
+
+        if mode == 'Absolute':
+            xafs3_start = float(self.xafs3_start.text())
+            xafs3_stop = float(self.xafs3_stop.text())
+        else:
+            xafs3_start = edge + float(self.xafs3_start.text())
+            xafs3_stop = edge + float(self.xafs3_stop.text())
+        self.xafs3_step.setValue(STEPShelper(xafs3_start, xafs3_stop, xafs3_npts))
 
 
     ##############################Calculates Scan Time ###################################
@@ -511,6 +608,12 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
                                         the total overhead for the scan
         :return: solves for the predicted scan time
         '''
+        global erange
+        erange = []
+        global estep
+        estep = []
+        global num_pts
+        num_pts = 0
         edge = float(self.edge_energy.text())
         mode = self.mode.currentText()
         pe_start = float(self.pe_start.text())
@@ -531,37 +634,36 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         if mode == 'Relative':
             pe_start = edge + float(self.pe_start.text())
             pe_stop = edge + float(self.pe_stop.text())
-        Erange(pe_start, pe_stop, pe_step)
+        erange, estep, num_pts = Erange(pe_start, pe_stop, pe_step, erange,estep, num_pts)
         if xanes_start != 0 and xanes_stop != 0:
             if mode == 'Relative':
                 xanes_start = edge + float(self.xanes_start.text())
                 xanes_stop = edge + float(self.xanes_stop.text())
-            Erange(xanes_start, xanes_stop, xanes_step)
+            erange, estep, num_pts = Erange(xanes_start, xanes_stop, xanes_step,erange,estep, num_pts)
         if xafs1_start != 0 and xafs1_stop != 0:
             if mode == 'Relative':
                 xafs1_start = edge + float(self.xafs1_start.text())
                 xafs1_stop = edge + float(self.xafs1_stop.text())
-            Erange(xafs1_start, xafs1_stop, xafs1_step)
+            erange, estep, num_pts = Erange(xafs1_start, xafs1_stop, xafs1_step,erange,estep, num_pts)
         if xafs2_start != 0 and xafs2_stop != 0:
             if mode == 'Relative':
                 xafs2_start = edge + float(self.xafs2_start.text())
                 xafs2_stop = edge + float(self.xafs2_stop.text())
-            Erange(xafs2_start, xafs2_stop, xafs2_step)
+            erange, estep, num_pts = Erange(xafs2_start, xafs2_stop, xafs2_step,erange,estep, num_pts)
         if xafs3_start != 0 and xafs3_stop != 0:
             if mode == 'Relative':
                 xafs3_start = edge + float(self.xafs3_start.text())
                 xafs3_stop = edge + float(self.xafs3_stop.text())
-            Erange(xafs3_start, xafs3_stop,  xafs3_step)
-        num_pts = getpts()
+            erange, estep, num_pts = Erange(xafs3_start, xafs3_stop,  xafs3_step,erange,estep, num_pts)
+        print (num_pts)
         dwell = float(self.pe_dwell.text())
         with open('testingjson.txt') as f:
             data = json.load(f)
             total_overhead = data['XAS']['overhead']
         scan_sec = num_pts * (dwell + total_overhead)
+        print (erange)
+        print (estep)
         self.scan_time.setText(str(datetime.timedelta(seconds=round(scan_sec))))
-        self.results.setText(str(geterange()) + '\n' + str(getestep()))
-
-
 
 
 ###########################################################################################
@@ -572,64 +674,35 @@ class spectroscopy(QtBaseClass, Ui_MainWindow):
         '''
         :return: xanes_plan: Running a XANES scan
         '''
-        dets = [det]
-        #plan = spiral(dets, motor1,motor2, x_start = float(self.pe_start.text()),y_start = float(self.pe_start.text()), x_range = float(self.pe_stop.text()), y_range = float(self.pe_stop.text()), dr = float(self.pe_step.text()), nth = float(self.pe_npts.text()))
-        #return count, ([dets]), {'num': int(self.num_scans.text())}
-        return scan, (dets, motor,float(self.pe_start.text()),  float(self.pe_stop.text())), {'num': float(self.pe_npts.text())}
-        #return plot_raster_path, plan, {'x_motor': motor1, 'y_motor': motor2}
-        #return xanes_plan, {'erange' : geterange().tolist(), 'estep' : getestep().tolist(), 'acqtime' : float(self.pe_dwell.text()), 'samplename' :str(self.sample_name.text()), 'filename' : str(self.file_name.text())}
+        if self.plot_layover.isChecked():
+            ax = self.results.figure.add_subplot(111)
+            ax2 = self.results_2.figure.add_subplot(111)
+        else:
+            ax = self.results.figure.clf()
+            ax2 = self.results_2.figure.clf()
+            ax = self.results.figure.add_subplot(111)
+            ax2 = self.results_2.figure.add_subplot(111)
+        #ax = plt.subplots(figsize=(20, 10))
+        global erange
+        global estep
+        return xanes_plan, {'erange' : erange.tolist(), 'estep' : estep.tolist(), 'acqtime' : float(self.pe_dwell.text()), 'samplename' :str(self.sample_name.text()), 'filename' : str(self.file_name.text()), 'ax1' : ax, 'ax2': ax2 }
 
 
     # Running  the scans
-    # def plan1(self):
-    #     '''
-    #     :return: runs the xanes scan. Should change the erange, estep, and acqtime. Possibly move the motors if needed.
-    #     '''
-    #     pln, args, kwargs = self.collect_args()
-    #     pixmap = LivePlot('det', 'motor')
-    #     RE(pln(*args, **kwargs),pixmap)
-    #     pixmap = QPixmap(pixmap)
-    #     self.results.setPixmap(pixmap)
-    #
-    #     header = db[-1]
-    #     string = str(header.table())
-    #     self.results.setText(string)
-        #  #RE(pln(*args, **kwargs))
-        # #dets = [det]
-        #
-        # plan = spiral(dets, motor1, motor2, x_start=float(self.pe_start.text()),
-        #               y_start=float(self.pe_start.text()), x_range=float(self.pe_stop.text()),
-        #               y_range=float(self.pe_stop.text()), dr=float(self.pe_step.text()),
-        #               nth=float(self.pe_npts.text()))
-        # # plan = spiral([det], motor1, motor2, x_start=0.0, y_start=0.0, x_range=1.,
-        # # y_range=1.0, dr=0.1, nth=10)
-        # plot_raster_path(plan, 'motor1', 'motor2', probe_size=.01)
-        #
-        # #num = int(self.pe_npts.text())
-        # #start = float(self.pe_start.text())
-        # #stop = float(self.pe_stop.text())
-        # #RE(xanes_plan(erange,estep,samplename,filename,dwell))
-        # #dets = [det]
-        # #RE(scan(dets, motor, start, stop, num))
-        # #RE(count(dets,num))
-        #
-        # #works for scan
-        #
-        # dets = [det]
-        # start = float(self.pe_start.text())
-        # stop = float(self.pe_stop.text())
-        # num = float(self.pe_npts.text())
-        # RE(scan(dets, motor, start, stop, num))
-        #
-        # # plot_raster_path(plan, 'motor1', 'motor2', probe_size=.01)
-        # header = db[-1]
-        # string = str(header.table())
-        # self.results.setText(string)
+    def plan1(self):
+        '''
+        :return: runs the xanes scan. Should change the erange, estep, and acqtime. Possibly move the motors if needed.
+        '''
+
+        pln, kwargs = self.collect_args()
+        RE(pln(**kwargs))
+        print ('RE(xanes_plan(erange =' + str(erange) + ', estep = ' + str(estep) + ', acqtime = ' + str(self.pe_dwell.text()) + '))')
+
 
 ###############################################################################################
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    w = Spectroscopy()
+    w = Spectroscopy2()
     w.show()
     sys.exit(app.exec_())
