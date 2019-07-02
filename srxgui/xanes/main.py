@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
 
-form, base = uic.loadUiType('MainWindow.ui')
+form, base = uic.loadUiType('untitled.ui')
 
 class MainWidget(base,form):
 
