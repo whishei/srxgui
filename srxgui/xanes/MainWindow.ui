@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLabel" name="label">
@@ -443,6 +443,24 @@
       </property>
       <property name="text">
        <string>SRX Beamline </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="userdataform">
+      <property name="geometry">
+       <rect>
+        <x>914</x>
+        <y>30</y>
+        <width>101</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>User Data Form</string>
       </property>
      </widget>
     </widget>

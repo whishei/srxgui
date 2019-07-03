@@ -10,10 +10,14 @@ class MainWidget(base,form):
     def __init__(self):
         super(base, self).__init__()
         self.setupUi(self)
-        self.submit.clicked.connect(self.changepage)
+        self.submit.clicked.connect(self.changepage2)
+        self.userdataform.clicked.connect(self.changepage1)
 
-    def changepage(self):
+    def changepage2(self):
         self.stackedWidget.setCurrentIndex(1)
+
+    def changepage1(self):
+        self.stackedWidget.setCurrentIndex(0)
 
     def setdefault(self):
         if self.default_2.isChecked() == True:
