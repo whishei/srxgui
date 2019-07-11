@@ -86,7 +86,7 @@ class MyApp(QMainWindow):
         
             self.ui.overhead_.setText(overhead_string)
               
-         def Calculate_The_FlyingStepsize(self):
+        def Calculate_The_FlyingStepsize(self):
             message = 'None'
             xstart = float(self.ui.xstartLineE.text())
             xstop = float(self.ui.xstopLineE.text())
@@ -271,8 +271,8 @@ class MyApp(QMainWindow):
 
 
 
-#      if __name__ == '__main__':
-app = QApplication(sys.argv)
-window = MyApp()
-window.show()
-sys.exit(app.exec_())      
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = MyApp()
+    window.show()
+    sys.exit(app.exec_())

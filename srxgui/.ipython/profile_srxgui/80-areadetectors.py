@@ -247,4 +247,23 @@ en.read()
 # 			'run_flags',
 #
 # 			'trigger_signal']
+#Simulated Detector?
+from ophyd import (PseudoPositioner, PseudoSingle, EpicsMotor)
+from ophyd import (Component as Cpt, Device)
+from ophyd.pseudopos import (pseudo_position_argument,
+                             real_position_argument)
+from ophyd.sim import SynSignal, SynAxis
+from ophyd.positioner import SoftPositioner
+
+class HFSampleStage(Device):
+    x = Cpt(SynAxis)
+    y = Cpt(SynAxis)
+    z = Cpt(SynAxis)
+    th = Cpt(SynAxis)
+    topx = Cpt(SynAxis)
+    topz = Cpt(SynAxis)
+
+hf_stage = HFSampleStage(name='hf_stage')
+
+hf_stage.read()
 
