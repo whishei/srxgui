@@ -17,6 +17,7 @@
         "Stepping Motors": [
             "Coarse X",
             "Coarse Y",
+            "Coarse Z",
             "Rotation"
         ]
     },
