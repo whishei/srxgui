@@ -674,15 +674,17 @@ class spectroscopy2(QtBaseClass, Ui_MainWindow):
         '''
         :return: xanes_plan: Running a XANES scan
         '''
-        if self.plot_layover.isChecked():
-            ax = self.results.figure.add_subplot(111)
-            ax2 = self.results_2.figure.add_subplot(111)
-        else:
-            ax = self.results.figure.clf()
-            ax2 = self.results_2.figure.clf()
-            ax = self.results.figure.add_subplot(111)
-            ax2 = self.results_2.figure.add_subplot(111)
+        # if self.plot_layover.isChecked():
+        #     ax = self.results.figure.add_subplot(111)
+        #     ax2 = self.results_2.figure.add_subplot(111)
+        # else:
+        #     ax = self.results.figure.clf()
+        #     ax2 = self.results_2.figure.clf()
+        #     ax = self.results.figure.add_subplot(111)
+        #     ax2 = self.results_2.figure.add_subplot(111)
         #ax = plt.subplots(figsize=(20, 10))
+        ax = self.results.figure.add_subplot(111)
+        ax2 = self.results_2.figure.add_subplot(111)
         global erange
         global estep
         return xanes_plan, {'erange' : erange.tolist(), 'estep' : estep.tolist(), 'acqtime' : float(self.pe_dwell.text()), 'samplename' :str(self.sample_name.text()), 'filename' : str(self.file_name.text()), 'ax1' : ax, 'ax2': ax2 }
