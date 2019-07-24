@@ -3,21 +3,13 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
 
-form, base = uic.loadUiType('MainWindow.ui')
+form, base = uic.loadUiType('Metadata.ui')
 
-class MainWidget(base,form):
+class Metadata(base,form):
 
-    def __init__(self):
-        super(base, self).__init__()
+    def __init__(self, parent = None):
+        super(Metadata, self).__init__()
         self.setupUi(self)
-        self.submit.clicked.connect(self.changepage2)
-        self.userdataform.clicked.connect(self.changepage1)
-
-    def changepage2(self):
-        self.stackedWidget.setCurrentIndex(1)
-
-    def changepage1(self):
-        self.stackedWidget.setCurrentIndex(0)
 
     def setdefault(self):
         if self.default_2.isChecked() == True:
@@ -35,6 +27,8 @@ class MainWidget(base,form):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    w = MainWidget()
+    w = Metadata()
     w.show()
     sys.exit(app.exec_())
+
+
