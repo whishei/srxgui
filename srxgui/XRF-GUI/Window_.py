@@ -2,54 +2,48 @@ import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QToolTip, QMessageBox
 from PyQt5.QtCore import QCoreApplication
 import datetime 
-print(datetime)
+
 from PyQt5 import uic
 import json
 from bluesky.plans import scan, rel_scan
 from ophyd.sim import det4, motor1, motor2
-print(datetime)
+
 #limit
 
 import numpy as np
 from bluesky.plans import (scan, )
 from bluesky.plan_stubs import (one_1d_step, kickoff, collect, complete,
                                 abs_set, mv)
-print(datetime)
+
 import bluesky.plan_stubs as bps
 from bluesky.preprocessors import (stage_decorator,
                                    run_decorator, subs_decorator,
                                    monitor_during_decorator)
 from ophyd.sim import NullStatus
-# from bluesky.callbacks import CallbackBase, LiveGrid, LivePlot
 from ophyd import Device
 import uuid
-# import h5py
 from collections import ChainMap
 from ophyd.areadetector.filestore_mixins import resource_factory
-# from hxntools.handlers import register
-# register(db)
 from ophyd.sim import hw
 from bluesky.plans import scan
-print(datetime)
+
 from ophyd.sim import hw
 from bluesky.run_engine import RunEngine
 from databroker import temp_config, Broker
 from bluesky.plans import fly
 import bluesky.plans as bp
-print(datetime)
+
 ########################
 from bluesky.plans import grid_scan
 from ophyd.sim import det4, motor1, motor2
 
 from bluesky.callbacks.mpl_plotting import LiveGrid
 from bluesky.callbacks.mpl_plotting import LivePlot
-print(datetime)
+
 from position import *
-print(datetime)
-# from scan_and_fly91 import *
-#Fin limit
+#end limit
 Ui_Widget, QtBaseClass = uic.loadUiType('XRFmappingGui.ui')
-print(datetime)
+
 
 class DrawingLiveGrid(LiveGrid):
     def event(self, *args, **kwargs):
@@ -84,7 +78,7 @@ class Window_(QtBaseClass,Ui_Widget):
                 data = json.load(json_data)
                 overhead = data['XRF']['overhead']
                 overhead_string = str(overhead)
-                #Readong the Positionner from the Json file
+                #Reading the Positionner from the Json file
                 flyingMotor = data['XRF']['Flying Motors']
                 steppingMotor = data['XRF']['Stepping Motors']
                 courseXfly =data['XRF']['Flying Motors'][0]
@@ -390,8 +384,7 @@ class Window_(QtBaseClass,Ui_Widget):
         xstart = self.flyingStart.value()
         xstop =self.flyingStop.value()
         xnum = self.npts_x.value()
-        # message_ =  " "
-        # self.message.setText(message_)
+        
         if xnum != 1:
             stepsizex = ((xstop -xstart)/(xnum - 1)) 
             self.stepsize_x.setValue(stepsizex)
@@ -421,8 +414,6 @@ class Window_(QtBaseClass,Ui_Widget):
         ystart = self.steppingStart.value()
         ystop =self.steppingStop.value()
         ynum = self.npts_y.value()
-        # message_ = " "
-        # self.message.setText(message_)
         if ynum != 1:
             stepsizey = ((ystop -ystart)/(ynum - 1)) 
             self.stepsize_y.setValue(stepsizey)
@@ -503,7 +494,6 @@ class Window_(QtBaseClass,Ui_Widget):
             xnum = int(self.npts_x.value())
             ynum = int(self.npts_y.value())
             detectors = [det4]
-            # return scan, (detectors,motor1, xstart, xstop, xnum)
             self.map_.figure.clf()
             ax = self.map_.figure.add_subplot(111)
             self.lg = lg = DrawingLiveGrid((xnum, ynum), 'det4', ax=ax)
@@ -513,21 +503,7 @@ class Window_(QtBaseClass,Ui_Widget):
     def myplan(self):
 
         plan,args = self.collect_arg_kwargs()
-        # RE(plan(*args ,num= None, per_step=None,md=None))
-        # ax1 = self.ui.map_.figure.add_subplot(111)
-        # RE(plan(*args),LiveGrid((15, 15), 'det4', ax = ax1))
-        # plan,args= self.collect_arg_kwargs()
-
         RE(plan(*args))
-        # RE(plan(*args),LivePlot('det4', 'motor1', ax = ax1))
 
-
-
-# if __name__ == '__main__':
-#     import sys
-print(datetime)
-#app = QApplication(sys.argv)
 window = Window_()
 window.show()
-#sys.exit(app.exec_())
-print(datetime)
