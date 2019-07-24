@@ -1,5 +1,5 @@
 import ophyd.sim
-from ophyd.sim import DetWithCountTime, DetWithConf, det, FakeEpicsSignal, FakeEpicsSignalRO, Device, Signal
+from ophyd.sim import DetWithCountTime, DetWithConf, det, FakeEpicsSignal, FakeEpicsSignalRO, Device, Signal, SynSignal
 from ophyd.sim import Component as Cpt
 from ophyd.sim import DDC
 from collections import OrderedDict
@@ -109,11 +109,16 @@ class SRXScaler(Device):
     mca3 = Cpt(FakeEpicsSignalRO, 'mca3')
 
     mca4 = Cpt(FakeEpicsSignalRO, 'mca4')
-
+    ch1 = Cpt(Signal, kind='hinted')
     i0 = Cpt(Signal)
 
-    def __init__(self, **kwargs):
+    def __init__(self, src, **kwargs):
         super().__init__(**kwargs)
+        self._src = src
+
+    def trigger(self):
+        self.ch1.put(self._src.read()['en_energy']['value'])
+        return super().trigger()
 
 
 
@@ -137,6 +142,13 @@ class SimSrxXspress3Detector(DetWithCountTime):
         super().__init__(configuration_attrs=configuration_attrs,
 
                      read_attrs=read_attrs, **kwargs)
+        #self._src = src
+
+    #intensity = Cpt(Signal, kind='hinted')
+
+    #def trigger(self):
+        #self.intensity.put(self.src.read()['xs_intensity']['value'])
+        #return super().trigger()
 
     # this is possiblely one too many places to store this
 
@@ -149,10 +161,7 @@ class SimSrxXspress3Detector(DetWithCountTime):
 
 # xs = SrxXspress3Detector('XF:05IDD-ES{Xsp:1}:', name='xs')
 xs = SimSrxXspress3Detector(name='xs')
-sclr1 = SRXScaler(name = 'sclr1')
-sclr1.mca1.sim_put([1,1,1])
-sclr1.mca2.sim_put([2,2,2])
-sclr1.read_attrs = ['mca1', 'mca2']
+
 #Energy
 from ophyd import (PseudoPositioner, PseudoSingle, EpicsMotor)
 from ophyd import (Component as Cpt, Device)
@@ -191,6 +200,13 @@ en.fundamental
 en.harmonic.set(3)
 
 en.read()
+
+sclr1 = SRXScaler(en, name = 'sclr1')
+sclr1.mca1.sim_put([1,1,1])
+sclr1.mca2.sim_put([2,2,2])
+sclr1.read_attrs = ['mca1', 'mca2', 'i0', 'ch1']
+sclr1.ch1.name = 'sclr1'
+
 
 # xs.channel1.rois.read_attrs = ['roi{:02}'.format(j) for j in [1, 2, 3, 4]]
 #
@@ -248,3 +264,14 @@ en.read()
 #
 # 			'trigger_signal']
 
+class HFSampleStage(Device):
+    x = Cpt(SynAxis)
+    y = Cpt(SynAxis)
+    z = Cpt(SynAxis)
+    th = Cpt(SynAxis)
+    topx = Cpt(SynAxis)
+    topz = Cpt(SynAxis)
+
+hf_stage = HFSampleStage(name='hf_stage')
+
+hf_stage.read()

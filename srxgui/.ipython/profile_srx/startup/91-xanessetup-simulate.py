@@ -8,7 +8,6 @@ from bluesky.utils import short_uid as _short_uid
 #import scanoutput
 import numpy
 import time
-from epics import PV
 #from databroker import get_table
 import collections
 from bluesky.callbacks import LiveTable, LivePlot
@@ -97,7 +96,7 @@ def xanes_afterscan_plan(scanid, filename, roinum):
 def xanes_plan(erange = [], estep = [],  
             harmonic=1, correct_c2_x=True, correct_c1_r = False, detune = None,
             acqtime=1., roinum=1, delaytime = 0.00, struck=True, fluor = True,
-            samplename = '', filename = '', shutter = True, align = False, align_at = None, per_step=None):
+            samplename = '', filename = '', shutter = True, align = False, align_at = None, per_step=None, ax1 = None, ax2 = None, ax3 = None):
                 
     '''
     erange (list of floats): energy ranges for XANES in eV, e.g. erange = [7112-50, 7112-20, 7112+50, 7112+120]
@@ -122,7 +121,10 @@ def xanes_plan(erange = [], estep = [],
 
     shutter:  instruct the scan to control the B shutter [bool]
     align:  control the tuning of the DCM pointing before each XANES scan [bool]
-    align_at:  energy at which to align, default is the first energy point 
+    align_at:  energy at which to align, default is the first energy point
+    ax1: give the GUI's ax to plug the graph into
+    ax2: give the GUI's ax to plug the graph into
+    ax3: give the GUI's ax to plug the graph into
     '''                                
                 
     ept = numpy.array([])
@@ -191,7 +193,7 @@ def xanes_plan(erange = [], estep = [],
         #setup xspress3
         # yield from abs_set(xs.settings.acquire_time,acqtime)
         # yield from abs_set(xs.total_points,len(ept))
-    #det.append(sclr1)
+    det.append(sclr1)
     det.append(xs)
     
     #setup the preamp
@@ -261,7 +263,7 @@ def xanes_plan(erange = [], estep = [],
         #liveploty = [xs]
         liveploty = xs.name
         liveplotx = en.energy.name
-        liveplotfig = plt.figure('raw xanes')
+        #liveplotfig = plt.figure('raw xanes')
     # elif struck == True:
         # liveploty = 'sclr_it' 
         # liveplotx = energy.energy.name
@@ -272,7 +274,7 @@ def xanes_plan(erange = [], estep = [],
     ########Tom said to edit it here!!!!!!!!!
 
     # livecallbacks.append(LivePlot(y =liveploty, x=liveplotx, fig=liveplotfig))
-    livecallbacks.append(LivePlot(y='xs_intensity', x=liveplotx, fig=liveplotfig))
+    #livecallbacks.append(LivePlot(y='xs_intensity', x=liveplotx, fig=liveplotfig))
     #livecallbacks.append(LivePlot(y =liveploty, x=liveplotx, ax=plt.gca(title='raw xanes')))
         
     if struck == True:
@@ -281,10 +283,11 @@ def xanes_plan(erange = [], estep = [],
     # else:
         # liveploty = 'current_preamp_ch2'
         # i0 = 'current_preamp_ch2'
-    liveplotfig2 = plt.figure(i0)
-    livecallbacks.append(LivePlot(liveploty, x=liveplotx, fig=liveplotfig2))
+    #liveplotfig2 = plt.figure(i0)
+    #ax = ax2
+    livecallbacks.append(LivePlot(liveploty, x=liveplotx, ax = ax2))
     #livecallbacks.append(LivePlot(liveploty, x=liveplotx, ax=plt.gca(title='incident intensity')))
-    livenormfig = plt.figure('normalized xanes')    
+    #livenormfig = plt.figure('normalized xanes')
     #if fluor == True:
         #livecallbacks.append(NormalizeLivePlot([xs], x=liveplotx, norm_key = i0, fig=livenormfig))
         #livecallbacks.append(NormalizeLivePlot(roi_key[0], x=liveplotx, norm_key = i0, ax=plt.gca(title='normalized xanes')))  
@@ -324,14 +327,17 @@ def xanes_plan(erange = [], estep = [],
     # myscan = scan_nd(det, energy.bragg, list(ebragg), energy.u_gap, list(egap), energy.c2_x, list(exgap))
     # myscan = finalize_wrapper(myscan,finalize_scan)
     livecallbacks = []
-    livecallbacks.append(LiveTable([xs, en.energy]))
-    liveplotfig = plt.figure('raw xanes')
-    livecallbacks.append(LivePlot(y = 'xs_intensity', x = 'en_energy', fig = liveplotfig))
     #livecallbacks.append(LiveTable([xs, en.energy]))
-    liveplotfig2 = plt.figure('io')
-    livecallbacks.append(LivePlot(y = 'sclr1', x = 'en_energy', fig = liveplotfig2))
-    #livecallbacks.append(LivePlot(y='sclr_io', x='en_energy', fig='io'))
-    RE.subscribe(livecallbacks)
+    #liveplotfig = plt.figure('raw xanes')
+    #livecallbacks.append(LivePlot(y = 'xs_intensity', x = 'en_energy', fig = liveplotfig))
+    #livecallbacks.append(LiveTable([xs, en.energy]))
+    #liveplotfig2 = plt.figure('io')
+    ax = ax1
+    livecallbacks.append(LivePlot(y = 'xs_intensity', x = 'en_energy', ax = ax))
+    ax = ax2
+    livecallbacks.append(LivePlot(y='sclr1', x='en_energy', ax = ax))
+
+    #RE.subscribe(livecallbacks[1])
     return (yield from subs_wrapper(myscan,{'all':livecallbacks}))
-    #return (yield from subs_wrapper(myscan, LiveTable([xs, en.energy])))
+    return (yield from subs_wrapper(myscan, LiveTable([xs, en.energy])))
     #return (yield from myscan)
