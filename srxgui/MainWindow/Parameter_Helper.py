@@ -1,9 +1,6 @@
-import sys
-from PyQt5 import uic
-import numpy
-import xraylib
-import math
+#Helper file for Parameters.py
 
+import numpy
 
 ###################### Solves for npts #########################
 def PTShelper(start, stop, step):
