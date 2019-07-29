@@ -1,3 +1,5 @@
+#The Element Energy Index Widget
+
 import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5 import uic
@@ -9,9 +11,11 @@ class Elements(QtBaseClass, Ui_MainWindow):
     def __init__(self, parent = None):
         super(QtBaseClass, self).__init__()
         self.setupUi(self)
+        #Filling in the element tab
         f = open("elements.txt", 'r')
         s = f.read()
         self.elements.setText(s)
+        #Filling in the edge tab
         f = open("edges.txt", 'r')
         s = f.read()
         self.edges.setText(s)

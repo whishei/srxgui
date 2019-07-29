@@ -2,19 +2,20 @@ import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QToolTip, QMessageBox
 from PyQt5.QtCore import QCoreApplication
 import datetime 
-print(datetime)
+#print(datetime)
 from PyQt5 import uic
 import json
+from MainScreen_Helper import SavingXRF
 from bluesky.plans import scan, rel_scan
 from ophyd.sim import det4, motor1, motor2
-print(datetime)
+#print(datetime)
 #limit
 
 import numpy as np
 from bluesky.plans import (scan, )
 from bluesky.plan_stubs import (one_1d_step, kickoff, collect, complete,
                                 abs_set, mv)
-print(datetime)
+#print(datetime)
 import bluesky.plan_stubs as bps
 from bluesky.preprocessors import (stage_decorator,
                                    run_decorator, subs_decorator,
@@ -30,26 +31,26 @@ from ophyd.areadetector.filestore_mixins import resource_factory
 # register(db)
 from ophyd.sim import hw
 from bluesky.plans import scan
-print(datetime)
+#print(datetime)
 from ophyd.sim import hw
 from bluesky.run_engine import RunEngine
 from databroker import temp_config, Broker
 from bluesky.plans import fly
 import bluesky.plans as bp
-print(datetime)
+#print(datetime)
 ########################
 from bluesky.plans import grid_scan
 from ophyd.sim import det4, motor1, motor2
 
 from bluesky.callbacks.mpl_plotting import LiveGrid
 from bluesky.callbacks.mpl_plotting import LivePlot
-print(datetime)
+#print(datetime)
 from position import *
-print(datetime)
+#print(datetime)
 # from scan_and_fly91 import *
 #Fin limit
 Ui_Widget, QtBaseClass = uic.loadUiType('XRFmappingGui.ui')
-print(datetime)
+#print(datetime)
 
 class DrawingLiveGrid(LiveGrid):
     def event(self, *args, **kwargs):
@@ -59,22 +60,23 @@ class DrawingLiveGrid(LiveGrid):
 
 class Window_(QtBaseClass,Ui_Widget):
 
-    def __init__(self):
+    def __init__(self, parent = None):
         super(QtBaseClass, self).__init__()
         self.setupUi(self)
-        self.scan.clicked.connect(self.control)
-        self.scan.clicked.connect(self.calctheExtent_x)
-        self.scan.clicked.connect(self.calctheExtent_y)
-        self.scan.clicked.connect(self.calcFlyingNpts)
-        self.scan.clicked.connect(self.calcFlyingStepsize)
-        self.scan.clicked.connect(self.calcSteppingNpts)
-        self.scan.clicked.connect(self.calcSteppingStepsize)
-        self.scan.clicked.connect(self.fly_and_scanX)
-        self.scan.clicked.connect(self.collect_arg_kwargs)
+        self.save_xrf.clicked.connect(self.control)
+        self.save_xrf.clicked.connect(self.calctheExtent_x)
+        self.save_xrf.clicked.connect(self.calctheExtent_y)
+        self.save_xrf.clicked.connect(self.calcFlyingNpts)
+        self.save_xrf.clicked.connect(self.calcFlyingStepsize)
+        self.save_xrf.clicked.connect(self.calcSteppingNpts)
+        self.save_xrf.clicked.connect(self.calcSteppingStepsize)
+        # self.save_xrf.clicked.connect(self.fly_and_scanX)
+        # self.save_xrf.clicked.connect(self.collect_arg_kwargs)
         self.setstartbtn.clicked.connect(self.assignStartFromCurrent)
         self.setstopbtn.clicked.connect(self.assignStopFromCurrent)
-        self.scan.clicked.connect(self.calculate_TheEstimatedScanTime)
-        self.scan.clicked.connect(self.myplan)
+        # self.save_xrf.clicked.connect(self.calculate_TheEstimatedScanTime)
+        # self.save_xrf.clicked.connect(self.myplan)
+        self.save_xrf.clicked.connect(self.saving_xrf)
         dwell = self.dwell_t.value()
         
         self.flying.activated[str].connect(self.control)
@@ -494,6 +496,23 @@ class Window_(QtBaseClass,Ui_Widget):
             second = ((xnum * ynum *dwell) + (overhead * ynum))
             self.es_time.setText(str(datetime.timedelta(seconds = round(second))))
 
+    def saving_xrf(self):
+        with open('myJsonfile.json') as json_data:
+            data = json.load(json_data)
+            xrf_overhead = data['XRF']['overhead']
+        flymotor = self.flying.currentText()
+        stepmotor = self.stepping.currentText()
+        xrf_dwell = self.dwell_t.value()
+        xstart = self.flyingStart.value()
+        xstop = self.flyingStop.value()
+        ystart = self.steppingStart.value()
+        ystop = self.steppingStop.value()
+        xnum = int(self.npts_x.value())
+        ynum = int(self.npts_y.value())
+        second = ((xnum * ynum *xrf_dwell) + (xrf_overhead * ynum))
+        SavingXRF(xstart,xstop,xnum, ystart,ystop, ynum, xrf_dwell, second, flymotor, stepmotor)
+
+
     def collect_arg_kwargs(self):     
             dwell = self.dwell_t.value()
             xstart = self.flyingStart.value()
@@ -523,11 +542,11 @@ class Window_(QtBaseClass,Ui_Widget):
 
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
 #     import sys
-print(datetime)
+#print(datetime)
 #app = QApplication(sys.argv)
-window = Window_()
-window.show()
+    window = Window_()
+    window.show()
 #sys.exit(app.exec_())
-print(datetime)
+#print(datetime)

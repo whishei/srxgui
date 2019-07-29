@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>302</width>
+    <width>344</width>
     <height>34</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>300</width>
+     <width>342</width>
      <height>32</height>
     </rect>
    </property>
@@ -51,6 +51,9 @@
         <pointsize>10</pointsize>
        </font>
       </property>
+      <property name="decimals">
+       <number>4</number>
+      </property>
      </widget>
     </item>
     <item>
@@ -75,6 +78,9 @@
         <pointsize>10</pointsize>
        </font>
       </property>
+      <property name="decimals">
+       <number>4</number>
+      </property>
      </widget>
     </item>
     <item>
@@ -98,6 +104,9 @@
        <font>
         <pointsize>10</pointsize>
        </font>
+      </property>
+      <property name="decimals">
+       <number>4</number>
       </property>
      </widget>
     </item>
