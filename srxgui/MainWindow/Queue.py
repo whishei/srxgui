@@ -105,7 +105,7 @@ class Queue(base,form):
         '''
 
         index = GetIndex()
-        if index == 0:
+        if index == 0:   #Spectroscopy Scan
             kwargs = add_to_queue()
             if kwargs == 0:
                 w = QMessageBox.warning(self, 'Error Message', 'You must save the scan before you can add to queue.',
@@ -124,10 +124,10 @@ class Queue(base,form):
                     display_item = 'Spectroscopy Scan: Erange = ' + str(erange) + ', Estep = ' + str(estep) + ', E0 = ' + str(E0) + ', Dwell Time = ' + str(dwell) + ', X = ' + str(xmotor) + ', Y = ' + str(ymotor) + ', Z =' + str(zmotor)
                 else:
                     display_item = 'Spectroscopy Scan: Erange = ' + str(erange) + ', Estep = ' + str(estep) + ', E0 = ' + str(E0)  + 'Krange = ' + str(krange) + ', Kstep = ' + str(kstep) + ', Dwell Time = ' + str(dwell) + ', X = ' + str(xmotor) + ', Y = ' + str(ymotor) + ', Z =' + str(zmotor)
-                Add_to_Queue(kwargs)
-                self.Queue_list.addItem(display_item)
+                Add_to_Queue(kwargs)  #Adds a scan to the queue
+                self.Queue_list.addItem(display_item) #Adds a scan to the displayed list
 
-        if index == 1:
+        if index == 1:    #XRF Mapping
             args = add_xrf_to_queue()
             xstart = args[0]
             xstop = args[1]
@@ -136,22 +136,33 @@ class Queue(base,form):
             ystop = args[4]
             ynum = args[5]
             args = add_xrf_args()
-            Add_to_Queue(args)
+            Add_to_Queue(args) #Adds a scan to the queue
             display_item = 'XRF Mapping: Xstart = ' + str(xstart) + ', Xstop = ' + str(xstop) + ', Xnum = ' + str(xnum) + ', Ystart = ' + str(ystart) + ', Ystop = ' + str(ystop) + ', Ynum = ' + str(ynum)
-            self.Queue_list.addItem(display_item)
+            self.Queue_list.addItem(display_item)  #Adds a scan to the displayed list
 
+
+    ########################## Deleting a Scan from the Queue ###########################
 
     def Deleting(self):
+        '''
+        Deletes a scan from both the displayed list and the queue
+        '''
         item = self.Queue_list.currentRow()
         Delete_from_Queue(item)
         self.Queue_list.takeItem(item)
 
+
+    ########################## Editing a Scan from the Queue ###########################
+
     def Editing(self):
+        '''
+        Opens the appropriate editor for the scan type
+        '''
         queue = self.Queue_list
         item_index = queue.currentRow()
         item = GetQueueItem(item_index)
         text = queue.currentItem().text()
-        if text[0] == 'S':
+        if text[0] == 'S':  #Spectroscopy Scan
             erange = str(item['e_range'])
             erange = erange.strip('[]')
             estep= str(item['e_steps'])
@@ -160,7 +171,7 @@ class Queue(base,form):
             ymotor = float(item['y_motor'])
             zmotor = float(item['z_motor'])
             E0 = item['E_0']
-            if item['k_range'] == []:
+            if item['k_range'] == []:  #Does not include k-space
                 self.ErangeWindow = Erange_Editor()
                 #str(item['erange'])
                 self.ErangeWindow.erange.setText(erange)
@@ -171,7 +182,7 @@ class Queue(base,form):
                 self.ErangeWindow.z_motor.setValue(zmotor)
                 self.ErangeWindow.E0.setText(str(E0))
                 self.ErangeWindow.show()
-            else:
+            else:  #Includes k-space
                 self.KrangeWindow = Krange_Editor()
                 krange = str(item['k_range'])
                 krange = krange.strip('[]')
@@ -187,7 +198,7 @@ class Queue(base,form):
                 self.KrangeWindow.z_motor.setValue(zmotor)
                 self.KrangeWindow.E0.setText(str(E0))
                 self.KrangeWindow.show()
-        else:
+        else: #XRF Mapping
             self.XRFWindow = XRF_Editor()
             self.XRFWindow.xstart.setText(str(item[2]))
             self.XRFWindow.xstop.setText(str(item[3]))
@@ -197,15 +208,21 @@ class Queue(base,form):
             self.XRFWindow.ynum.setText(str(item[8]))
             self.XRFWindow.show()
 
+
+    ########################## Saving the Edits ###########################
+
     def SaveEditing(self):
+        '''
+        Saves the edits to change the display item and the values in the queue
+        '''
         item_txt = self.Queue_list.currentItem()
         queue = self.Queue_list
         item_index = queue.currentRow()
         item = GetQueueItem(item_index)
         text = queue.currentItem().text()
-        if text[0] == 'S':
+        if text[0] == 'S': #Spectroscopy Scan
             E0 = item['E_0']
-            if item['k_range'] == []:
+            if item['k_range'] == []:  #No k-space
                 erange_change, estep_change, dwell_change, xchange, ychange, zchange= ReturnErangeItem()
                 item['e_range'] = erange_change
                 item['e_steps'] = estep_change
@@ -215,7 +232,7 @@ class Queue(base,form):
                 item['z_motor'] = zchange
                 ReturnQueueItem(item_index,item)
                 item_txt.setText('Spectroscopy Scan: Erange = ' + str(erange_change) + ', Estep = ' + str(estep_change) + ', E0 = ' + str(E0) + ', Dwell Time = ' + str(dwell_change) + ', X = ' + str(xchange) + ', Y = ' + str(ychange) + ', Z =' + str(zchange))
-            else:
+            else: #k-space
                 erange_change, estep_change, krange_change, kstep_change, dwell_change, xchange, ychange, zchange  = ReturnKrangeItem()
                 item['erange'] = erange_change
                 item['estep'] = estep_change
@@ -227,7 +244,7 @@ class Queue(base,form):
                 item['z_motor'] = zchange
                 ReturnQueueItem(item_index,item)
                 item_txt.setText('Spectroscopy Scan: Erange = ' + str(erange_change) + ', Estep = ' + str(estep_change) + ', E0 = ' + str(E0)  + 'Krange = ' + str(krange_change) + ', Kstep = ' + str(kstep_change) + ', Dwell Time = ' + str(dwell) + ', X = ' + str(xchange) + ', Y = ' + str(ychange) + ', Z =' + str(zchange))
-        else:
+        else: #XRF Mapping
             xstart_change, xstop_change, xnum_change, ystart_change, ystop_change, ynum_change = ReturnXRFItem()
             item = list(item)
             item[2] = xstart_change

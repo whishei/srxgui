@@ -4,7 +4,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QPushButton
 from PyQt5 import uic
 from MainScreen_Helper import *
-from Queue_Helper import GetQueue, SendIndex, set_up_xrf
+from Queue_Helper import GetQueue, SendIndex, set_up_xrf, GetscanSecs
 import warnings
 import datetime
 from bluesky.callbacks.mpl_plotting import LiveGrid
@@ -230,7 +230,8 @@ class MainWidget(base,form):
                 self.lg = lg = DrawingLiveGrid((xnum, ynum), 'noisy_det', ax=xrf_ax)
                 pln = set_up_xrf(lg)
                 RE(pln(*args))
-
+        secs = GetscanSecs()
+        self.queue_time.setText(str(datetime.timedelta(seconds=round(secs))))
 
     ########################### Saving Queue ####################
 
