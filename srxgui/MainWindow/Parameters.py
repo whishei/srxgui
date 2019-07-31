@@ -7,6 +7,7 @@ import xraylib
 from Parameter_Helper import *
 from MainScreen_Helper import *
 import json
+import sys
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType('Parameters.ui')
 

@@ -120,7 +120,7 @@ def set_motors(x, y, z):
 
 
 #For XRF Mapping
-global xstart,xstop,xnum, ystart,ystop, ynum, xrf_dwell, second, flymotor, stepmotor
+global xstart,xstop,xnum, ystart,ystop, ynum, xrf_dwell, second, flymotor, stepmotor,courseXfly,courseYfly
 xstart = 0
 ystart = 0
 xstop = 0
@@ -131,14 +131,15 @@ xrf_dwell = 0
 second = 0
 flymotor = ''
 stepmotor = ''
-
+courseXfly=''
+courseYfly=''
 
 
 ############################# Setting Parameters (Used in Window_) #################################
 
-def SavingXRF(xstart1,xstop1,xnum1, ystart1,ystop1, ynum1, xrf_dwell1, second1, flymotor1, stepmotor1 ):
+def SavingXRF(xstart1,xstop1,xnum1, ystart1,ystop1, ynum1, xrf_dwell1, second1, flymotor1, stepmotor1,courseXfly_,courseYfly_ ):
     'Collects the xstart, xstop xnum, ystart, ystop, ynum, dwell, seonds, flymotor, and stepping motor to run a Spectroscopy Scan'
-    global xstart, xstop, xnum, ystart, ystop, ynum, xrf_dwell, second, flymotor, stepmotor
+    global xstart, xstop, xnum, ystart, ystop, ynum, xrf_dwell, second, flymotor, stepmotor,courseXfly,courseYfly
     xstart = 0
     ystart = 0
     xstop = 0
@@ -159,16 +160,35 @@ def SavingXRF(xstart1,xstop1,xnum1, ystart1,ystop1, ynum1, xrf_dwell1, second1, 
     second = second1
     flymotor = flymotor1
     stepmotor = stepmotor1
+    courseXfly = courseXfly_
+    courseYfly=courseYfly_
 
 
 ############################# Retrieving the Parameters (Used in main) #################################
 
 def Collecting_XRF(lg):
     'Sending main the args and plan to run a grid scan'
-    global xstart, xstop, xnum, ystart, ystop, ynum
-    print (xstart,xstop,xnum,ystart,ystop, ynum)
+    global xstart, xstop, xnum, ystart, ystop, ynum,courseXfly,courseYfly,xrf_dwell
+    # print (xstart,xstop,xnum,ystart,ystop, ynum,courseXfly,courseYfly)
     detectors = [noisy_det]
-    return bpp.subs_decorator([lg])(grid_scan), (detectors, motor1, xstart, xstop, xnum, motor2, ystart, ystop, ynum, False)
+    if flymotor == courseXfly:
+        print(" ")
+        x_scan = ('RE(scan_and_fly( {} , {}, {}, {}, {}, {}, {} )'
+                              .format(xstart, xstop, xnum, ystart, 
+                                ystop, ynum,xrf_dwell))
+                                    
+                # print (x_scan)
+        print(x_scan)
+        return bpp.subs_decorator([lg])(grid_scan), (detectors, motor1, xstart, xstop, xnum, motor2, ystart, ystop, ynum, False)
+
+    else:
+
+        yscan = ('RE(y_scan_and_fly( {} , {}, {}, {}, {}, {}, {} )'
+                    .format(ystart, ystop, ynum, xstart, xstop, xnum,xrf_dwell))
+
+        print (yscan)
+
+        return bpp.subs_decorator([lg])(grid_scan), (detectors, motor1, xstart, xstop, xnum, motor2, ystart, ystop, ynum, False)             
 
 
 ############################# Retrieving the Parameters (Used in queue) #################################
