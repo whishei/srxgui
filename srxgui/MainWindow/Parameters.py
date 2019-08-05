@@ -1,10 +1,13 @@
-import sys
+#Setting up the Parameter Widget  (Used for Spectroscopy Scans)
+
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5 import uic
 import numpy as np
 import xraylib
 from Parameter_Helper import *
 from MainScreen_Helper import *
+import json
+import sys
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType('Parameters.ui')
 
@@ -19,6 +22,7 @@ class Parameters(QtBaseClass, Ui_MainWindow):
         self.xafs1_units.activated[str].connect(self.Units1)
         self.xafs2_units.activated[str].connect(self.Units2)
         self.xafs3_units.activated[str].connect(self.Units3)
+        #Filling the element options
         y = []
         for i in range(22,47):
             y = np.append(y, xraylib.AtomicNumberToSymbol(i))
@@ -26,6 +30,9 @@ class Parameters(QtBaseClass, Ui_MainWindow):
             y = np.append(y, xraylib.AtomicNumberToSymbol(i))
         for item in range(len(y)):
             self.elements.addItem(y[item])
+
+
+################# Saving a Spectroscopy Scan #######################
 
     def Saving(self):
         '''
@@ -81,6 +88,8 @@ class Parameters(QtBaseClass, Ui_MainWindow):
         xafs1_step = float(self.xafs1_step.text())
         xafs2_step = float(self.xafs2_step.text())
         xafs3_step = float(self.xafs3_step.text())
+
+        #Calculating the Erange, Estep, and Overall number of points
         if mode == 'Relative':
             pe_start = edge + float(self.pe_start.text())
             pe_stop = edge + float(self.pe_stop.text())
@@ -114,14 +123,19 @@ class Parameters(QtBaseClass, Ui_MainWindow):
                 erange, estep, num_pts = Erange(xafs3_start, xafs3_stop, xafs3_step, erange, estep, num_pts)
             else:
                 krange, kstep, num_pts = Krange(xafs3_start, xafs3_stop, xafs3_step, krange, kstep, num_pts)
+
         dwell = float(self.pe_dwell.text())
-        total_overhead = 4.75
+        with open('testingjson.txt') as f:
+            data = json.load(f)
+            total_overhead = data['XAS']['overhead']
+        #Calculating estimated scan time
         scan_sec = num_pts * (dwell + total_overhead)
         sample = str(self.sample_name.text())
         file = str(self.file_name.text())
-        print (krange)
+        #Saving the collected parameters to MainScreen_Helper
         RunScan(erange, estep, dwell, sample, file, krange, kstep, edge)
         CalcTime(scan_sec)
+
 
 
     ############################# Points ##################################
@@ -197,6 +211,8 @@ class Parameters(QtBaseClass, Ui_MainWindow):
             xafs3_stop = edge + float(self.xafs3_stop.text())
         self.xafs3_npts.setRange(1, PTShelper(xafs3_start, xafs3_stop, 0.1))
         self.xafs3_npts.setValue(PTShelper(xafs3_start, xafs3_stop, xafs3_step))
+
+
 
     ########################### Steps ###################################
     # Requires helper function
@@ -367,6 +383,8 @@ class Parameters(QtBaseClass, Ui_MainWindow):
                 self.xafs3_start.setRange(4500 - edge_energy, 25000 - edge_energy)
                 self.xafs3_stop.setRange(4500 - edge_energy, 25000 - edge_energy)
 
+
+
     ############################ Element Activated #########################
 
     def onActivated(self, text):
@@ -450,6 +468,8 @@ class Parameters(QtBaseClass, Ui_MainWindow):
                 self.xafs3_stop.setRange(4500, 25000)
                 self.xafs3_start.setValue(edge_energy)
                 self.xafs3_stop.setValue(edge_energy)
+
+
 
     ############################# Edge Activated ###############################
 
@@ -539,6 +559,8 @@ class Parameters(QtBaseClass, Ui_MainWindow):
                 self.xafs3_stop.setRange(4500, 25000)
                 self.xafs3_start.setValue(edge_energy)
                 self.xafs3_stop.setValue(edge_energy)
+
+
 
     ######################### k space ####################################
 
@@ -665,7 +687,10 @@ class Parameters(QtBaseClass, Ui_MainWindow):
                     self.xafs3_start.setValue(start)
                     self.xafs3_stop.setValue(stop)
 
+
+
     ##################### Stop Limits #########################
+
     def stoplimit(self):
         '''
         :param pe_start: (float) start of pre-edge region
@@ -705,7 +730,10 @@ class Parameters(QtBaseClass, Ui_MainWindow):
             if xafs3_start != 4500:
                 self.xafs3_stop.setRange(xafs3_start, 25000 - edge_energy)
 
+
+
     ##################### Set Start ###########################
+
     def setstart(self):
         '''
         :param pe_stop: (float) stop of pre_edge region
@@ -729,6 +757,8 @@ class Parameters(QtBaseClass, Ui_MainWindow):
             self.xafs2_start.setValue(xafs1_stop)
         if xafs2_stop != 4500 and xafs3_units == 'eV':
             self.xafs3_start.setValue(xafs2_stop)
+
+
 
     ############################## Dwell Time #####################################
     # Sets all dwell times to be the same based off of which one was changed

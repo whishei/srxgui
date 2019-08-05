@@ -1,0 +1,1 @@
+[([SynGauss(name='noisy_det', value=0.930136721081914, timestamp=1564547131.065546)], SynAxis(prefix='', name='motor1', read_attrs=['readback', 'setpoint'], configuration_attrs=['velocity', 'acceleration']), 4.0, 6.0, 3, SynAxis(prefix='', name='motor2', read_attrs=['readback', 'setpoint'], configuration_attrs=['velocity', 'acceleration']), 3.0, 10.0, 4, False)]

@@ -1,5 +1,6 @@
-import xraylib
+#Fills in the Element Energy Index
 
+import xraylib
 
 #Generating the Element Tab
 file = open("elements.txt","w")

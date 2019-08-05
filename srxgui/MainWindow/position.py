@@ -18,7 +18,7 @@ class HFSampleStage (Device):
 
 
 hf_stage = HFSampleStage(name='hf_stage')
-hf_stage.x.set(5)
+# hf_stage.x.set(5)
 
 hf_stage.read()
 

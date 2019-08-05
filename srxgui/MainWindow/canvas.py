@@ -1,3 +1,5 @@
+#Needed to set up the graphs for the Spectroscopy Scans
+
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.figure as cf
 

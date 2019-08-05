@@ -130,7 +130,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Save</string>
+        <string>Save Changes</string>
        </property>
       </widget>
      </item>
