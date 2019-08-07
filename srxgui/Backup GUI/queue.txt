@@ -1,0 +1,1 @@
+S,,{"x_motor": 0, "y_motor": 0, "z_motor": 0, "e_range": [10367.1, 10367.1, 10367.1, 10367.1, 10367.1, 10367.1], "e_steps": [0.1, 0.1, 0.1, 0.1, 0.1], "E_0": 10367.1, "k_range": [], "k_steps": [], "dwell": 0.0, "samplename": "", "filename": "", "ax11": null, "ax22": null, "ax33": null}
